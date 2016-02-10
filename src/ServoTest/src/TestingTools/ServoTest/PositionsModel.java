@@ -14,6 +14,7 @@ public class PositionsModel{
 	private HashMap<Integer, Integer> minimum;
 	private HashMap<Integer, Integer> position;
 	
+	
 	//Constructor is Private to force Singleton implementation
 	private PositionsModel(){
 		
@@ -78,6 +79,12 @@ public class PositionsModel{
 		if(singleton == null)
 			singleton = new PositionsModel();
 		return singleton;
+	}
+	
+	//getPosition returns the position of the given Servo
+	public int getPosition(int servoID)
+	{
+		return position.get(servoID);
 	}
 	
 	//validateValue checks that the desired value is

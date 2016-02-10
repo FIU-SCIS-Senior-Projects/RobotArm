@@ -5,6 +5,7 @@ package TestingTools.ServoTest;
 // for FIU Discovery Lab Telebot - Arms
 
 import TestingTools.ServoTest.PositionsModel;
+import discoverylab.telebot.master.arms.configurations.MasterArmsConfig;
 import jssc.SerialPort;
 import jssc.SerialPortException;
 
@@ -28,7 +29,7 @@ public class ServoControl {
 	private ServoControl()
 	{
 		servoModel = PositionsModel.getSingleton();
-		serialPortName = "/dev/ttyUSB0";
+		serialPortName = "Com8";
 		baudRate = 57600;
 		dataBits = SerialPort.DATABITS_8;
 		stopBits = SerialPort.STOPBITS_1;
@@ -70,13 +71,157 @@ public class ServoControl {
 		}
 	}
 	
-
+	public boolean getSerialConnected(){
+		return serialConnected;
+	}
+	
+	private void setArmToRest(int servoID)
+	{
+		//Check if servo is in left arm
+		if((servoID >= 20) && (servoID <= 25))
+		{
+			//Check that other servos in left arm at rest
+			//If not, set them to rest pausing to allow arm
+			//to move. Move order: 1-Wrist roll 2-Elbow roll 3-Forearm yaw 
+			//4-Arm yaw 5-Arm roll 6-Arm pitch
+			if(servoID != 25)//Wrist roll
+				if(servoModel.getPosition(25) != MasterArmsConfig.WRIST_ROLL_LEFT_REST)
+				{ 
+					setPosition(servoModel.setSevoValue(MasterArmsConfig.WRIST_ROLL_LEFT_REST, 25), 25);
+					try{
+						Thread.sleep(2000);
+					}
+					catch(InterruptedException e) {
+						Thread.currentThread().interrupt();
+					}
+				}
+			if(servoID != 23)//Elbow roll
+				if(servoModel.getPosition(23) != MasterArmsConfig.ELBOW_ROLL_LEFT_REST){
+					setPosition(servoModel.setSevoValue(MasterArmsConfig.ELBOW_ROLL_LEFT_REST, 23), 23);			
+					try{
+						Thread.sleep(2000);
+					}
+					catch(InterruptedException e) {
+						Thread.currentThread().interrupt();
+					}
+				}
+			if(servoID != 24)//Forearm yaw
+				if(servoModel.getPosition(24) != MasterArmsConfig.FOREARM_YAW_LEFT_REST){
+					setPosition(servoModel.setSevoValue(MasterArmsConfig.FOREARM_YAW_LEFT_REST, 24), 24);			
+					try{
+						Thread.sleep(2000);
+					}
+					catch(InterruptedException e) {
+						Thread.currentThread().interrupt();
+					}
+				}
+			if(servoID != 22)//Arm yaw
+				if(servoModel.getPosition(22) != MasterArmsConfig.ARM_YAW_LEFT_REST){
+					setPosition(servoModel.setSevoValue(MasterArmsConfig.ARM_YAW_LEFT_REST, 22), 22);			
+					try{
+						Thread.sleep(2000);
+					}
+					catch(InterruptedException e) {
+						Thread.currentThread().interrupt();
+					}
+				}
+			if(servoID != 21)//Arm roll
+				if(servoModel.getPosition(21) != MasterArmsConfig.ARM_ROLL_LEFT_REST){
+					setPosition(servoModel.setSevoValue(MasterArmsConfig.ARM_ROLL_LEFT_REST, 21), 21);			
+					try{
+						Thread.sleep(2000);
+					}
+					catch(InterruptedException e) {
+						Thread.currentThread().interrupt();
+					}
+				}
+			if(servoID != 20)//Arm pitch
+				if(servoModel.getPosition(20) != MasterArmsConfig.ARM_PITCH_LEFT_REST){
+					setPosition(servoModel.setSevoValue(MasterArmsConfig.ARM_PITCH_LEFT_REST, 20), 20);			
+					try{
+						Thread.sleep(2000);
+					}
+					catch(InterruptedException e) {
+						Thread.currentThread().interrupt();
+					}
+				}
+		}
+		//Check if servo is in right arm
+		else if((servoID >= 30) && (servoID <= 35))
+		{
+			//Check that other servos in right arm at rest
+			//If not, set them to rest pausing to allow arm
+			//to move. Move order: 1-Wrist roll 2-Elbow roll 3-Forearm yaw 
+			//4-Arm yaw 5-Arm roll 6-Arm pitch
+			if(servoID != 35)//Wrist roll
+				if(servoModel.getPosition(35) != MasterArmsConfig.WRIST_ROLL_RIGHT_REST)
+				{ 
+					setPosition(servoModel.setSevoValue(MasterArmsConfig.WRIST_ROLL_RIGHT_REST, 35), 35);
+					try{
+						Thread.sleep(2000);
+					}
+					catch(InterruptedException e) {
+						Thread.currentThread().interrupt();
+					}
+				}
+			if(servoID != 33)//Elbow roll
+				if(servoModel.getPosition(33) != MasterArmsConfig.ELBOW_ROLL_RIGHT_REST){
+					setPosition(servoModel.setSevoValue(MasterArmsConfig.ELBOW_ROLL_RIGHT_REST, 33), 33);			
+					try{
+						Thread.sleep(2000);
+					}
+					catch(InterruptedException e) {
+						Thread.currentThread().interrupt();
+					}
+				}
+			if(servoID != 34)//Forearm yaw
+				if(servoModel.getPosition(34) != MasterArmsConfig.FOREARM_YAW_RIGHT_REST){
+					setPosition(servoModel.setSevoValue(MasterArmsConfig.FOREARM_YAW_RIGHT_REST, 34), 34);			
+					try{
+						Thread.sleep(2000);
+					}
+					catch(InterruptedException e) {
+						Thread.currentThread().interrupt();
+					}
+				}
+			if(servoID != 32)//Arm yaw
+				if(servoModel.getPosition(32) != MasterArmsConfig.ARM_YAW_RIGHT_REST){
+					setPosition(servoModel.setSevoValue(MasterArmsConfig.ARM_YAW_RIGHT_REST, 32), 32);			
+					try{
+						Thread.sleep(2000);
+					}
+					catch(InterruptedException e) {
+						Thread.currentThread().interrupt();
+					}
+				}
+			if(servoID != 31)//Arm roll
+				if(servoModel.getPosition(31) != MasterArmsConfig.ARM_ROLL_RIGHT_REST){
+					setPosition(servoModel.setSevoValue(MasterArmsConfig.ARM_ROLL_RIGHT_REST, 31), 31);			
+					try{
+						Thread.sleep(2000);
+					}
+					catch(InterruptedException e) {
+						Thread.currentThread().interrupt();
+					}
+				}
+			if(servoID != 30)//Arm pitch
+				if(servoModel.getPosition(30) != MasterArmsConfig.ARM_PITCH_RIGHT_REST){
+					setPosition(servoModel.setSevoValue(MasterArmsConfig.ARM_PITCH_RIGHT_REST, 30), 30);			
+					try{
+						Thread.sleep(2000);
+					}
+					catch(InterruptedException e) {
+						Thread.currentThread().interrupt();
+					}
+				}		
+		}
+	}
 	
 	private void setPosition(int value, int servoID)
 	{
 		if(serialConnected){
 			try{
-			String commandString = servoID + " " + value + " 50\r"; //50 = servoSpeed
+			String commandString = "<" + servoID + " " + value + " 0>\r"; //50 = servoSpeed
 			System.out.println(commandString);
 			serialPort.writeString(commandString);
 			}
@@ -91,6 +236,7 @@ public class ServoControl {
 	public int newValue (int value, int servoID)
 	{
 		int correctedValue = value;
+		setArmToRest(servoID);
 		correctedValue = servoModel.setSevoValue(correctedValue, servoID);
 		setPosition(correctedValue, servoID);
 		return correctedValue;
