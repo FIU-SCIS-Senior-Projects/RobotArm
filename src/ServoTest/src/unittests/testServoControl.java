@@ -49,5 +49,9 @@ public class testServoControl extends TestCase {
 		controller.newValue(0, 25);
 		assertEquals(MasterArmsConfig.WRIST_ROLL_LEFT_MIN, model.getPosition(25));
 	}
+	
+	public void testGetPosition(){
+		assertEquals(2048, model.getPosition(25));
+	}
 
 }
