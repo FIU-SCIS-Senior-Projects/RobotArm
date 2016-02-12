@@ -24,11 +24,17 @@ public class ServoControl {
 	private Integer stopBits; 
 	private Integer parityType;
 	private Integer eventMask;
+	private Integer[] servoIDList = {10, 11, 25, 35, 23, 33, 24, 34, 22, 32, 21, 31, 20, 30};
+	//servoIDList is ordered to reduce risk of the robot arm hitting the
+	//robot body while the servos are being initialized when the class
+	//singleton is instantiated
 	
 	//Private constructor to force use of getSingleton()
 	private ServoControl()
 	{
 		servoModel = PositionsModel.getSingleton();
+		
+		//Serial Port init
 		serialPortName = "Com8";
 		baudRate = 57600;
 		dataBits = SerialPort.DATABITS_8;
@@ -40,6 +46,16 @@ public class ServoControl {
 		if(initiate())
 			serialConnected = true;
 		
+		//Set all servos to their starting position
+		for(int i=0; i < servoIDList.length; i++){
+			setPosition(servoModel.getPosition(servoIDList[i]), servoIDList[i]);
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public static ServoControl getSingleton(){
@@ -48,10 +64,12 @@ public class ServoControl {
 		return singleton;
 	}
 	
-	/**
-	 * Slave Hands Initiate - Open Hand Serial Connection
-	 * @return
+	//This method was copied from:
+	/* CoreSlaveComponent.java
+	 * @author Irvin Steve Cardenas
 	 */
+	//To ensure that for testing the serial port is opened 
+	//in the same manner as it is opened in practice
 	@SuppressWarnings("finally")
 	public boolean initiate(){
 		try {
@@ -75,6 +93,12 @@ public class ServoControl {
 		return serialConnected;
 	}
 	
+	//setArmToRest will check which arm the selected servo
+	//is in. It then checks the other servos in that arm in
+	//an order designed to prevent the robot arm from hitting
+	//robot body. If the other servo is not in it's rest position
+	//it will be set to it's rest position before moving on 
+	//to the next servo.
 	private void setArmToRest(int servoID)
 	{
 		//Check if servo is in left arm
@@ -217,11 +241,13 @@ public class ServoControl {
 		}
 	}
 	
+	//setPosition prepares the command string to send to
+	//serial port to be sent to the CM-700 servo control board
 	private void setPosition(int value, int servoID)
 	{
 		if(serialConnected){
 			try{
-			String commandString = "<" + servoID + " " + value + " 0>\r"; //50 = servoSpeed
+			String commandString = "<" + servoID + " " + value + " 500>\r"; //500 = servoSpeed
 			System.out.println(commandString);
 			serialPort.writeString(commandString);
 			}
@@ -233,6 +259,15 @@ public class ServoControl {
 			System.out.println("Cannot set new Position. Serial port not open.\n");
 	}
 	
+	//newValue takes a servo position value and servoID
+	//It will call setArmToRest to prepare to move the
+	//selected servo. It then updates the model by 
+	//calling setServoValue. If value is outside of
+	//the valid range for servoID, setServoValue will
+	//return the appropriately correcte value. This
+	//new value will then be sent to the servo by
+	//calling setPosition. The corrected value is 
+	//returned to the calling method.
 	public int newValue (int value, int servoID)
 	{
 		int correctedValue = value;

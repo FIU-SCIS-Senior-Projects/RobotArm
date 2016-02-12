@@ -1,4 +1,10 @@
 package unittests;
+//testServoControl class
+//@author Curtis Cox
+//testServoControl is the JUnit class for the 
+//ServoControl and PositionsModel classes 
+//of the test suite for FIU Discovery Lab 
+//Telebot - Arms
 
 import TestingTools.ServoTest.ServoControl;
 import TestingTools.ServoTest.PositionsModel;
@@ -22,7 +28,7 @@ public class testServoControl extends TestCase {
 		model = null;
 	}
 	
-	public void testServoControl(){
+	public void testServoControlConstruct(){
 	
 		assertNotNull(controller);
 		assertEquals(true, controller.getSerialConnected());
@@ -41,7 +47,6 @@ public class testServoControl extends TestCase {
 	
 	public void testNewValue(){
 		
-		assertEquals(2048, model.getPosition(25));
 		controller.newValue(3000, 25);
 		assertEquals(3000, model.getPosition(25));
 		controller.newValue(5000, 25);
@@ -52,6 +57,11 @@ public class testServoControl extends TestCase {
 	
 	public void testGetPosition(){
 		assertEquals(2048, model.getPosition(25));
+	}
+	
+	public void testSetArmToRest(){
+		controller.newValue(3000, 23);
+		controller.newValue(3000, 25);
 	}
 
 }

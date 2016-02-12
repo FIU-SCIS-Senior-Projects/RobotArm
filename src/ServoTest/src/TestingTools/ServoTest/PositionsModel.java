@@ -111,6 +111,13 @@ public class PositionsModel{
 		return (position.get(servoID) == value);
 	}
 	
+	
+	//setServoValue is passsed a value and a servoID
+	//It will call validateValue to ensure the value
+	//is in the vaild range for that servo. It will
+	//then store the appropriatly adjusted value
+	//into the model and return the final value
+	//to the calling function
 	public int setSevoValue(int value, int servoID){
 		int finalValue = validateValue(value, servoID);
 		recordValue(finalValue, servoID);
