@@ -5,9 +5,12 @@ package TestingTools.ServoTest;
 //for FIU Discovery Lab Telebot - Arms
 
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 import javax.swing.AbstractButton;
+import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -40,18 +43,15 @@ public class ServoTestGui extends JFrame
 					s30Label, s31Label, s32Label, s33Label, 
 					s34Label, s35Label;
 	protected FlowLayout labelLayout, buttonLayout;
+	private ServoControl controller;
 	
-	public ServoTestGui(String name){
-		super(name);
-	}
-	
-	 public void addComponentsToPane(final Container pane) {
-		 
-		 labelLayout = new FlowLayout();
-		 labelLayout.setAlignment(FlowLayout.CENTER);
-		 buttonLayout = new FlowLayout();
-		 buttonLayout.setAlignment(FlowLayout.LEFT);
-		 
+	public ServoTestGui() {
+		 controller = ServoControl.getSingleton();
+
+		 GroupLayout layout = new GroupLayout(getContentPane());
+		 getContentPane().setLayout(layout);
+		 layout.setAutoCreateGaps(true);
+		 layout.setAutoCreateContainerGaps(true);
 
 		 
 		 
@@ -65,16 +65,7 @@ public class ServoTestGui extends JFrame
 		 s10Button1.setActionCommand("10Max");
 		 s10Button1.addActionListener(this);
 		
-		 JPanel s10LabelPanel = new JPanel();
-		 s10LabelPanel.setLayout(labelLayout);
-		 s10LabelPanel.add(s10Label);
-		 pane.add(s10LabelPanel, BorderLayout.CENTER);
-		 JPanel s10ButtonPanel = new JPanel();
-		 s10ButtonPanel.setLayout(buttonLayout);
-		 s10ButtonPanel.add(s10Button0);
-		 s10ButtonPanel.add(s10Button1);
-		 pane.add(s10ButtonPanel, BorderLayout.SOUTH);
-		
+
 		s11Label = new JLabel("Servo 11 - Head Yaw");
 		s11Button0 = new JButton("Head Looking Right");
 		s11Button0.setHorizontalTextPosition(AbstractButton.CENTER);
@@ -88,18 +79,7 @@ public class ServoTestGui extends JFrame
 		s11Button2.setHorizontalTextPosition(AbstractButton.CENTER);
 		s11Button2.setActionCommand("11Max");
 		s11Button2.addActionListener(this);
-		
-		 JPanel s11LabelPanel = new JPanel();
-		 s11LabelPanel.setLayout(labelLayout);
-		 s11LabelPanel.add(s11Label);
-		 pane.add(s11LabelPanel, BorderLayout.CENTER);
-		 JPanel s11ButtonPanel = new JPanel();
-		 s11ButtonPanel.setLayout(buttonLayout);
-		 s11ButtonPanel.add(s11Button0);
-		 s11ButtonPanel.add(s11Button1);
-		 s11ButtonPanel.add(s11Button2);
-		 pane.add(s11ButtonPanel, BorderLayout.SOUTH);
-		 
+	
 		s20Label = new JLabel("Servo 20 - Left Shoulder Pitch");
 		s20Button0 = new JButton("Left Arm At Side - Rest");
 		s20Button0.setHorizontalTextPosition(AbstractButton.CENTER);
@@ -233,49 +213,161 @@ public class ServoTestGui extends JFrame
 		s35Button2.setActionCommand("35Min");
 		s35Button2.addActionListener(this);
 		
+		layout.setHorizontalGroup(layout.createSequentialGroup()
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+						.addComponent(s10Button0)
+						.addComponent(s11Button0)
+						.addComponent(s20Button0)
+						.addComponent(s21Button0)
+						.addComponent(s22Button0)
+						.addComponent(s23Button0)
+						.addComponent(s24Button0)
+						.addComponent(s25Button0)
+						.addComponent(s30Button0)
+						.addComponent(s31Button0)
+						.addComponent(s32Button0)
+						.addComponent(s33Button0)
+						.addComponent(s34Button0)
+						.addComponent(s35Button0))
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+						.addComponent(s10Label)
+						.addComponent(s10Button1)
+						.addComponent(s11Label)
+		                .addComponent(s11Button1)
+						.addComponent(s20Label)
+		                .addComponent(s20Button1)
+						.addComponent(s21Label)
+		                .addComponent(s21Button1)
+						.addComponent(s22Label)
+		                .addComponent(s22Button1)
+						.addComponent(s23Label)
+		                .addComponent(s23Button1)
+						.addComponent(s24Label)
+		                .addComponent(s24Button1)
+						.addComponent(s25Label)
+		                .addComponent(s25Button1)
+						.addComponent(s30Label)
+		                .addComponent(s30Button1)
+						.addComponent(s31Label)
+		                .addComponent(s31Button1)
+						.addComponent(s32Label)
+		                .addComponent(s32Button1)
+						.addComponent(s33Label)
+		                .addComponent(s33Button1)
+						.addComponent(s34Label)
+		                .addComponent(s34Button1)
+						.addComponent(s35Label)
+		                .addComponent(s35Button1))
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+						.addComponent(s11Button2)
+						.addComponent(s25Button2)
+						.addComponent(s32Button2)
+						.addComponent(s35Button2))
+	        );
+
+		
+		 layout.setVerticalGroup(layout.createSequentialGroup()
+				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+						 .addComponent(s10Label))
+				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+						 .addComponent(s10Button0)
+						 .addComponent(s10Button1))
+				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+						 .addComponent(s11Label))
+				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+						 .addComponent(s11Button0)
+						 .addComponent(s11Button1)
+						 .addComponent(s11Button2))
+				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+						 .addComponent(s20Label))
+				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+						 .addComponent(s20Button0)
+						 .addComponent(s20Button1))
+				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+						 .addComponent(s21Label))
+				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+						 .addComponent(s21Button0)
+						 .addComponent(s21Button1))
+				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+						 .addComponent(s22Label))
+				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+						 .addComponent(s22Button0)
+						 .addComponent(s22Button1))
+				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+						 .addComponent(s23Label))
+				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+						 .addComponent(s23Button0)
+						 .addComponent(s23Button1))
+				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+						 .addComponent(s24Label))
+				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+						 .addComponent(s24Button0)
+						 .addComponent(s24Button1))
+				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+						 .addComponent(s25Label))
+				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+						 .addComponent(s25Button0)
+						 .addComponent(s25Button1)
+						 .addComponent(s25Button2))
+				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+						 .addComponent(s30Label))
+				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+						 .addComponent(s30Button0)
+						 .addComponent(s30Button1))
+				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+						 .addComponent(s31Label))
+				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+						 .addComponent(s31Button0)
+						 .addComponent(s31Button1))
+				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+						 .addComponent(s32Label))
+				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+						 .addComponent(s32Button0)
+						 .addComponent(s32Button1)
+						 .addComponent(s32Button2))
+				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+						 .addComponent(s33Label))
+				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+						 .addComponent(s33Button0)
+						 .addComponent(s33Button1))
+				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+						 .addComponent(s34Label))
+				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+						 .addComponent(s34Button0)
+						 .addComponent(s34Button1))
+				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+						 .addComponent(s35Label))
+				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+						 .addComponent(s35Button0)
+						 .addComponent(s35Button1)
+						 .addComponent(s35Button2))
+			   );    
+		 
+		 setTitle("Telebot Arm Servo Tester");
+		 pack();
+		 setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	}
 		
-	
-public void actionPerformed(ActionEvent e) {
-	
-}
-	
-	 /**
-     * Create the GUI and show it.  For thread safety,
-     * this method should be invoked from the
-     * event dispatch thread.
-     * this method copied from:
-     * https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/uiswing/examples/layout/FlowLayoutDemoProject/src/layout/FlowLayoutDemo.java
-     * 
-     */
-    private static void createAndShowGUI() {
-        //Create and set up the window.
-        ServoTestGui frame = new ServoTestGui("FlowLayoutDemo");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //Set up the content pane.
-        frame.addComponentsToPane(frame.getContentPane());
-        //Display the window.
-        frame.pack();
-        frame.setVisible(true);
-    }
+	 public void actionPerformed(ActionEvent e) {
+		 String command = e.getActionCommand();
+		 
+		 int servoID = Integer.parseInt(command.substring(0, 2));
+		 int value = 2048;
+		 if(command.substring(2, 5).equals("Max"))
+			 value = controller.getMax(servoID);
+		 else if(command.substring(2, 5).equals("Min"))
+			 value = controller.getMin(servoID);
+		 else if(command.substring(2, 5).equals("Res"))
+			 value = 2048;
+		 controller.newValue(value, servoID);
+	 }
+	 	
 
- 
-    /**
-    * This method copied from:
-    * https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/uiswing/examples/components/LabelDemoProject/src/components/LabelDemo.java
-    */
-    public static void main(String[] args) {
-        //Schedule a job for the event dispatch thread:
-        //creating and showing this application's GUI.
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-        //Turn off metal's use of bold fonts
-            UIManager.put("swing.boldMetal", Boolean.FALSE);
-                 
-        createAndShowGUI();
-            }
-        });
-    }
+
+	 public static void main(String args[]) {
+	         new ServoTestGui().setVisible(true);
+	 }
+
 
 
 }

@@ -35,7 +35,7 @@ public class ServoControl {
 		servoModel = PositionsModel.getSingleton();
 		
 		//Serial Port init
-		serialPortName = "Com8";
+		serialPortName = "Com8";//"/dev/TelebotArms";
 		baudRate = 57600;
 		dataBits = SerialPort.DATABITS_8;
 		stopBits = SerialPort.STOPBITS_1;
@@ -275,5 +275,15 @@ public class ServoControl {
 		correctedValue = servoModel.setSevoValue(correctedValue, servoID);
 		setPosition(correctedValue, servoID);
 		return correctedValue;
+	}
+	
+	public int getMax(int servoID)
+	{
+		return servoModel.getMax(servoID);
+	}
+	
+	public int getMin(int servoID)
+	{
+		return servoModel.getMin(servoID);
 	}
 }

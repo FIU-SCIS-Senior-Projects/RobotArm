@@ -87,6 +87,16 @@ public class PositionsModel{
 		return position.get(servoID);
 	}
 	
+	public int getMax(int servoID)
+	{
+		return maximum.get(servoID);
+	}
+	
+	public int getMin(int servoID)
+	{
+		return minimum.get(servoID);
+	}
+	
 	//validateValue checks that the desired value is
 	//within the range of selected servo. If it is not
 	//it replaces the value with the appropriate min or max
