@@ -49,12 +49,12 @@ public class ServoControl {
 		//Set all servos to their starting position
 		for(int i=0; i < servoIDList.length; i++){
 			setPosition(servoModel.getPosition(servoIDList[i]), servoIDList[i]);
-			try {
+		/*	try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}*/
 		}
 	}
 	
