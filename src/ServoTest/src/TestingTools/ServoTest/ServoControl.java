@@ -9,9 +9,6 @@ import discoverylab.telebot.master.arms.configurations.MasterArmsConfig;
 import jssc.SerialPort;
 import jssc.SerialPortException;
 
-
-
-
 public class ServoControl {
 	
 	private static ServoControl singleton = null;

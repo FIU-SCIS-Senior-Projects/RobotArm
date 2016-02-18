@@ -4,7 +4,6 @@ package TestingTools.ServoTest;
 //ServoTestGui is the GUI class for the Servo test suite
 //for FIU Discovery Lab Telebot - Arms
 
-
 import javax.swing.WindowConstants;
 import javax.swing.AbstractButton;
 import javax.swing.GroupLayout;
@@ -15,25 +14,30 @@ import java.awt.event.ActionListener;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 
-
 public class ServoTestGui extends JFrame 
 							implements ActionListener{
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
-
-	//protected FlowLayout labelLayout, buttonLayout;
 	private ServoControl controller;
 	
+	// ServoTestGui creates and displays the UI 
+	// for the Servo Test App
 	public ServoTestGui() {
 		controller = ServoControl.getSingleton();
+		
+		 Font labelFont = new Font("Calibri", Font.BOLD, 22);
+		 Font buttonFont = new Font("Calibri", Font.BOLD, 18);
 		 
+		 GroupLayout layout = new GroupLayout(getContentPane());
+		 getContentPane().setLayout(layout);
+		 layout.setAutoCreateGaps(true);
+		 layout.setAutoCreateContainerGaps(true);
+		 		 
 		 JButton s10Button0, s10Button1, 
-		 s11Button0, s11Button1, s11Button2,
-			s20Button0, s20Button1,
-			s21Button0, s21Button1,
-			s22Button0, s22Button1,
+		 	s11Button0, s11Button1, s11Button2,
+		 	s20Button0, s20Button1,
+		 	s21Button0, s21Button1,
+		 	s22Button0, s22Button1,
 			s23Button0, s23Button1,
 			s24Button0, s24Button1,
 			s25Button0, s25Button1, s25Button2,
@@ -43,20 +47,16 @@ public class ServoTestGui extends JFrame
 			s33Button0, s33Button1,
 			s34Button0, s34Button1,
 			s35Button0, s35Button1, s35Button2;
-			JLabel s10Label, s11Label,
+		 
+		 JLabel s10Label, s11Label,
 			s20Label, s21Label, s22Label, s23Label, 
 			s24Label, s25Label,
 			s30Label, s31Label, s32Label, s33Label, 
 			s34Label, s35Label;
 
-		 GroupLayout layout = new GroupLayout(getContentPane());
-		 getContentPane().setLayout(layout);
-		 layout.setAutoCreateGaps(true);
-		 layout.setAutoCreateContainerGaps(true);
-
-		 Font labelFont = new Font("Calibri", Font.BOLD, 22);
-		 Font buttonFont = new Font("Calibri", Font.BOLD, 18);
-		 
+		 //Format and layout buttons and labels
+		 //Head
+		 //Servo 10 - Head Pitch
 		 s10Label = new JLabel("Servo 10 - Head Pitch");
 		 s10Label.setFont(labelFont);
 		 s10Button0 = new JButton("Head Looking Down");
@@ -69,8 +69,8 @@ public class ServoTestGui extends JFrame
 		 s10Button1.setHorizontalTextPosition(AbstractButton.CENTER);
 		 s10Button1.setActionCommand("10Max");
 		 s10Button1.addActionListener(this);
-		
-
+		 
+		 //Servo 11 - Head Yaw
 		 s11Label = new JLabel("Servo 11 - Head Yaw");
 		 s11Label.setFont(labelFont);
 		 s11Button0 = new JButton("Head Looking Right");
@@ -89,6 +89,8 @@ public class ServoTestGui extends JFrame
 		 s11Button2.setActionCommand("11Max");
 		 s11Button2.addActionListener(this);
 	
+		 //Left Arm
+		 //Servo 20 - Left Shoulder Pitch
 		 s20Label = new JLabel("Servo 20 - Left Shoulder Pitch");
 		 s20Label.setFont(labelFont);
 		 s20Button0 = new JButton("Left Arm At Side - Rest");
@@ -102,6 +104,7 @@ public class ServoTestGui extends JFrame
 		 s20Button1.setActionCommand("20Max");
 		 s20Button1.addActionListener(this);
 		
+		 //Servo 21 - Left Shoulder Roll
 		 s21Label = new JLabel("Servo 21 - Left Shoulder Roll");
 		 s21Label.setFont(labelFont);
 		 s21Button0 = new JButton("Left Arm At Side - Rest");
@@ -115,6 +118,7 @@ public class ServoTestGui extends JFrame
 		 s21Button1.setActionCommand("21Max");
 		 s21Button1.addActionListener(this);
 		
+		 //Servo 22 - Left Arm Yaw
 		 s22Label = new JLabel("Servo 22 - Left Arm Yaw");
 		 s22Label.setFont(labelFont);
 		 s22Button0 = new JButton("Left Elbow Pointing Back");
@@ -128,6 +132,7 @@ public class ServoTestGui extends JFrame
 		 s22Button1.setActionCommand("22Rest");
 		 s22Button1.addActionListener(this);
 		
+		 //Servo 23 - Left Elbow Roll
 		 s23Label = new JLabel("Servo 23 - Left Elbow Roll");
 		 s23Label.setFont(labelFont);
 		 s23Button0 = new JButton("Left Elbow Straight - Rest");
@@ -141,6 +146,7 @@ public class ServoTestGui extends JFrame
 		 s23Button1.setActionCommand("23Max");
 		 s23Button1.addActionListener(this);
 		
+		 //Servo 24 - Lfet Forearm Yaw
 		 s24Label = new JLabel("Servo 24 - Left Forearm Yaw");
 		 s24Label.setFont(labelFont);
 		 s24Button0 = new JButton("Left Wrist In Line With Elbow - Rest");
@@ -154,6 +160,7 @@ public class ServoTestGui extends JFrame
 		 s24Button1.setActionCommand("24Max");
 		 s24Button1.addActionListener(this);
 		
+		 //Servo 25 - Left Wrist Roll
 		 s25Label = new JLabel("Servo 25 - Left Wrist Roll");
 		 s25Label.setFont(labelFont);
 		 s25Button0 = new JButton("Left Wrist Back");
@@ -172,7 +179,8 @@ public class ServoTestGui extends JFrame
 		 s25Button2.setActionCommand("25Max");
 		 s25Button2.addActionListener(this);
 		
-		
+		 // Right Arm
+		 //Servo 30 - Right Shoulder Pitch
 		 s30Label = new JLabel("Servo 30 - Right Shoulder Pitch");
 		 s30Label.setFont(labelFont);
 		 s30Button0 = new JButton("Right Arm At Side - Rest");
@@ -186,6 +194,7 @@ public class ServoTestGui extends JFrame
 		 s30Button1.setActionCommand("30Min");
 		 s30Button1.addActionListener(this);
 		
+		 //Servo 31 - Right Shoulder Roll
 		 s31Label = new JLabel("Servo 31 - Right Shoulder Roll");
 		 s31Label.setFont(labelFont);
 		 s31Button0 = new JButton("Right Arm At Side - Rest");
@@ -199,6 +208,7 @@ public class ServoTestGui extends JFrame
 		 s31Button1.setActionCommand("31Min");
 		 s31Button1.addActionListener(this);
 		
+		 //Servo 32 - Right Arm Yaw
 		 s32Label = new JLabel("Servo 32 - Right Arm Yaw");
 		 s32Label.setFont(labelFont);
 		 s32Button0 = new JButton("Right Arm Yaw Min");
@@ -217,6 +227,7 @@ public class ServoTestGui extends JFrame
 		 s32Button2.setActionCommand("32Max");
 		 s32Button2.addActionListener(this);
 		
+		 //Servo 33 - Right Elbow Roll
 		 s33Label = new JLabel("Servo 33 - Right Elbow Roll");
 		 s33Label.setFont(labelFont);
 		 s33Button0 = new JButton("Right Elbow Straight - Rest");
@@ -230,6 +241,7 @@ public class ServoTestGui extends JFrame
 		 s33Button1.setActionCommand("33Min");
 		 s33Button1.addActionListener(this);
 		
+		 //Servo 34 - Right Forearm Yaw
 		 s34Label = new JLabel("Servo 34 - Right Forearm Yaw");
 		 s34Label.setFont(labelFont);
 		 s34Button0 = new JButton("Right Wrist In Line With Elbow - Rest");
@@ -243,6 +255,7 @@ public class ServoTestGui extends JFrame
 		 s34Button1.setActionCommand("34Min");
 		 s34Button1.addActionListener(this);
 		
+		 //Servo 35 - Right Wrist Roll
 		 s35Label = new JLabel("Servo 35 - Right Wrist Roll");
 		 s35Label.setFont(labelFont);
 		 s35Button0 = new JButton("Right Wrist Back");
@@ -261,6 +274,7 @@ public class ServoTestGui extends JFrame
 		 s35Button2.setActionCommand("35Min");
 		 s35Button2.addActionListener(this);
 		
+		 //Create the HorizontalGroups in the layout
 		 layout.setHorizontalGroup(layout.createSequentialGroup()
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
 						.addComponent(s10Button0)
@@ -313,7 +327,7 @@ public class ServoTestGui extends JFrame
 						.addComponent(s35Button2))
 	        );
 
-		
+		//Create the VerticalGroups in the layout
 		 layout.setVerticalGroup(layout.createSequentialGroup()
 				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
 						 .addComponent(s10Label))
@@ -395,26 +409,25 @@ public class ServoTestGui extends JFrame
 		 pack();
 		 setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	}
-		
-	 public void actionPerformed(ActionEvent e) {
-		 String command = e.getActionCommand();
+	
+	//actionPerformed will examine the ActionCommand
+	public void actionPerformed(ActionEvent e) {
+		String command = e.getActionCommand();
 		 
-		 int servoID = Integer.parseInt(command.substring(0, 2));
-		 int value = 2048;
-		 if(command.substring(2, 5).equals("Max"))
-			 value = controller.getMax(servoID);
-		 else if(command.substring(2, 5).equals("Min"))
-			 value = controller.getMin(servoID);
-		 else if(command.substring(2, 5).equals("Res"))
-			 value = 2048;
-		 controller.newValue(value, servoID);
-	 }
+		int servoID = Integer.parseInt(command.substring(0, 2));
+		int value = 2048;
+		if(command.substring(2, 5).equals("Max"))
+			value = controller.getMax(servoID);
+		else if(command.substring(2, 5).equals("Min"))
+			value = controller.getMin(servoID);
+		else if(command.substring(2, 5).equals("Res"))
+			value = 2048;
+		controller.newValue(value, servoID);
+	}
 	 	
-
-
-	 public static void main(String args[]) {
-	         new ServoTestGui().setVisible(true);
-	 }
+	public static void main(String args[]) {
+		new ServoTestGui().setVisible(true);
+	}
 
 
 
