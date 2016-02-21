@@ -34,8 +34,8 @@ public class PositionsModel{
 		maximum.put(25, MasterArmsConfig.WRIST_ROLL_LEFT_MAX);
 		maximum.put(30, MasterArmsConfig.ARM_PITCH_RIGHT_MAX);
 		maximum.put(31, MasterArmsConfig.ARM_ROLL_RIGHT_MAX);
-		maximum.put(32, MasterArmsConfig.ELBOW_ROLL_RIGHT_MAX);
-		maximum.put(33, MasterArmsConfig.ARM_YAW_RIGHT_MAX);
+		maximum.put(32, MasterArmsConfig.ARM_YAW_RIGHT_MAX);
+		maximum.put(33, MasterArmsConfig.ELBOW_ROLL_RIGHT_MAX);
 		maximum.put(34, MasterArmsConfig.FOREARM_YAW_RIGHT_MAX);
 		maximum.put(35, MasterArmsConfig.WRIST_ROLL_RIGHT_MAX);
 		
@@ -50,8 +50,8 @@ public class PositionsModel{
 		minimum.put(25, MasterArmsConfig.WRIST_ROLL_LEFT_MIN);
 		minimum.put(30, MasterArmsConfig.ARM_PITCH_RIGHT_MIN);
 		minimum.put(31, MasterArmsConfig.ARM_ROLL_RIGHT_MIN);
-		minimum.put(32, MasterArmsConfig.ELBOW_ROLL_RIGHT_MIN);
-		minimum.put(33, MasterArmsConfig.ARM_YAW_RIGHT_MIN);
+		minimum.put(32, MasterArmsConfig.ARM_YAW_RIGHT_MIN);
+		minimum.put(33, MasterArmsConfig.ELBOW_ROLL_RIGHT_MIN);
 		minimum.put(34, MasterArmsConfig.FOREARM_YAW_RIGHT_MIN);
 		minimum.put(35, MasterArmsConfig.WRIST_ROLL_RIGHT_MIN);
 		
@@ -66,8 +66,8 @@ public class PositionsModel{
 		position.put(25, MasterArmsConfig.WRIST_ROLL_LEFT_REST);
 		position.put(30, MasterArmsConfig.ARM_PITCH_RIGHT_REST);
 		position.put(31, MasterArmsConfig.ARM_ROLL_RIGHT_REST);
-		position.put(32, MasterArmsConfig.ELBOW_ROLL_RIGHT_REST);
-		position.put(33, MasterArmsConfig.ARM_YAW_RIGHT_REST);
+		position.put(32, MasterArmsConfig.ARM_YAW_RIGHT_REST);
+		position.put(33, MasterArmsConfig.ELBOW_ROLL_RIGHT_REST);
 		position.put(34, MasterArmsConfig.FOREARM_YAW_RIGHT_REST);
 		position.put(35, MasterArmsConfig.WRIST_ROLL_RIGHT_REST);
 		
@@ -85,6 +85,16 @@ public class PositionsModel{
 	public int getPosition(int servoID)
 	{
 		return position.get(servoID);
+	}
+	
+	public int getMax(int servoID)
+	{
+		return maximum.get(servoID);
+	}
+	
+	public int getMin(int servoID)
+	{
+		return minimum.get(servoID);
 	}
 	
 	//validateValue checks that the desired value is

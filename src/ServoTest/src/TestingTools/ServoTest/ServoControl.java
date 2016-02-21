@@ -9,9 +9,6 @@ import discoverylab.telebot.master.arms.configurations.MasterArmsConfig;
 import jssc.SerialPort;
 import jssc.SerialPortException;
 
-
-
-
 public class ServoControl {
 	
 	private static ServoControl singleton = null;
@@ -35,7 +32,7 @@ public class ServoControl {
 		servoModel = PositionsModel.getSingleton();
 		
 		//Serial Port init
-		serialPortName = "Com8";
+		serialPortName = "/dev/TelebotArms";
 		baudRate = 57600;
 		dataBits = SerialPort.DATABITS_8;
 		stopBits = SerialPort.STOPBITS_1;
@@ -49,12 +46,12 @@ public class ServoControl {
 		//Set all servos to their starting position
 		for(int i=0; i < servoIDList.length; i++){
 			setPosition(servoModel.getPosition(servoIDList[i]), servoIDList[i]);
-			try {
+		/*	try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}*/
 		}
 	}
 	
@@ -275,5 +272,15 @@ public class ServoControl {
 		correctedValue = servoModel.setSevoValue(correctedValue, servoID);
 		setPosition(correctedValue, servoID);
 		return correctedValue;
+	}
+	
+	public int getMax(int servoID)
+	{
+		return servoModel.getMax(servoID);
+	}
+	
+	public int getMin(int servoID)
+	{
+		return servoModel.getMin(servoID);
 	}
 }
