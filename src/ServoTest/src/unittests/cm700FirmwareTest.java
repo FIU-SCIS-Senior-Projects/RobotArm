@@ -1,10 +1,17 @@
 package unittests;
+//cm700FirmwareTest class
+//@author Curtis Cox
+//This is a JUnit test class for the 
+//servo position feedback routine in
+//the firmware for CM-700 servo controller
+//for Telebot'a arms and head, as well as
+//the ServoFeedback class. It is part 
+//of the Servo test suite
+//for FIU Discovery Lab Telebot - Arms
 
 import junit.framework.TestCase;
 import TestingTools.ServoTest.ServoControl;
 import TestingTools.ServoTest.ServoFeedback;
-//import TestingTools.ServoTest.PositionsModel;
-//import discoverylab.telebot.master.arms.configurations.*;
 
 public class cm700FirmwareTest extends TestCase {
 
@@ -25,9 +32,7 @@ public class cm700FirmwareTest extends TestCase {
 	
 	public void testcm700FirmwareFeedback(){
 		
-		//assertNotNull(controller);
-		//assertEquals(true, controller.getSerialConnected());
-		controller.newValue(500, 10);
+				controller.newValue(500, 10);
 		try {
 			Thread.sleep(3000);
 		} catch (InterruptedException e) {
