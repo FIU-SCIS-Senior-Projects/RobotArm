@@ -1,19 +1,23 @@
 package TestingTools.ServoTest;
 // ServoControl class
 // @author Curtis Cox
-// ServoControl is the contoller class for the Servo test suite
+// ServoControl is the controller class for the Servo test suite
 // for FIU Discovery Lab Telebot - Arms
 
 import TestingTools.ServoTest.PositionsModel;
+import TestingTools.ServoTest.ServoFeedback;
 import discoverylab.telebot.master.arms.configurations.MasterArmsConfig;
 import jssc.SerialPort;
+//import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
+
 
 public class ServoControl {
 	
 	private static ServoControl singleton = null;
 	private PositionsModel servoModel = null;
-	private SerialPort serialPort;
+	private ServoFeedback feedBack = null;
+	public SerialPort serialPort;
 	private Boolean serialConnected 				= false;
 	private String serialPortName;
 	private Integer baudRate;
@@ -30,9 +34,10 @@ public class ServoControl {
 	private ServoControl()
 	{
 		servoModel = PositionsModel.getSingleton();
+		feedBack = ServoFeedback.getSingleton();
 		
 		//Serial Port init
-		serialPortName = "/dev/TelebotArms";
+		serialPortName = "Com8"; //"/dev/TelebotArms";
 		baudRate = 57600;
 		dataBits = SerialPort.DATABITS_8;
 		stopBits = SerialPort.STOPBITS_1;
@@ -43,15 +48,23 @@ public class ServoControl {
 		if(initiate())
 			serialConnected = true;
 		
+		feedBack.setSerialPort(serialPort);
+		try {
+			serialPort.addEventListener(feedBack, eventMask);
+		} catch (SerialPortException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
 		//Set all servos to their starting position
 		for(int i=0; i < servoIDList.length; i++){
 			setPosition(servoModel.getPosition(servoIDList[i]), servoIDList[i]);
-		/*	try {
-				Thread.sleep(2000);
+			try {
+				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}*/
+			}
 		}
 	}
 	
@@ -244,7 +257,7 @@ public class ServoControl {
 	{
 		if(serialConnected){
 			try{
-			String commandString = "<" + servoID + " " + value + " 500>\r"; //500 = servoSpeed
+			String commandString = "<" + servoID + " " + value + " 100>\r"; //100 = servoSpeed
 			System.out.println(commandString);
 			serialPort.writeString(commandString);
 			}
@@ -271,6 +284,7 @@ public class ServoControl {
 		setArmToRest(servoID);
 		correctedValue = servoModel.setSevoValue(correctedValue, servoID);
 		setPosition(correctedValue, servoID);
+		//getFeedback(servoID);
 		return correctedValue;
 	}
 	
@@ -283,4 +297,5 @@ public class ServoControl {
 	{
 		return servoModel.getMin(servoID);
 	}
+	
 }
