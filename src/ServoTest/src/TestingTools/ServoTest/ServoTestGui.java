@@ -25,8 +25,8 @@ public class ServoTestGui extends JFrame
 	public ServoTestGui() {
 		controller = ServoControl.getSingleton();
 		
-		 Font labelFont = new Font("Calibri", Font.BOLD, 22);
-		 Font buttonFont = new Font("Calibri", Font.BOLD, 18);
+		 Font labelFont = new Font("Calibri", Font.BOLD, 20);
+		 Font buttonFont = new Font("Calibri", Font.BOLD, 16);
 		 
 		 GroupLayout layout = new GroupLayout(getContentPane());
 		 getContentPane().setLayout(layout);
