@@ -1,4 +1,9 @@
 package TestingTools.ServoTest;
+//ServoFeedBack class
+//@author Curtis Cox
+//ServoFeedback implements SerialPortEventListener
+//for the Servo test suite
+//for FIU Discovery Lab Telebot - Arms
 
 import jssc.SerialPort;
 import jssc.SerialPortEvent;
@@ -18,7 +23,7 @@ public class ServoFeedback implements SerialPortEventListener {
 	{
 		currentPositions = new HashMap<Integer, Integer>();
 		
-		for(int i =0; i<12; i++)
+		for(int i =0; i<14; i++)
 			currentPositions.put(servoIDList[i], -1);
 	}
 	
@@ -62,6 +67,22 @@ public class ServoFeedback implements SerialPortEventListener {
 						currentPositions.remove(servoID);
 						currentPositions.put(servoID, position);
 						System.out.println(position);
+					}
+				}
+			}
+			else //sync read to start of serial feedback message
+			{
+				for(int i = 0; i<10; i++)
+				{
+					if(feedBack.substring(i, i+1).equals(">"))
+					{
+						try {
+							serialPort.readBytes((i+2)%10);
+						} catch (SerialPortException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						i = 10;
 					}
 				}
 			}

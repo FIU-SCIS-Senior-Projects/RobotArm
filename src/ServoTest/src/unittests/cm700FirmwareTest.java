@@ -1,33 +1,38 @@
 package unittests;
+//cm700FirmwareTest class
+//@author Curtis Cox
+//This is a JUnit test class for the 
+//servo position feedback routine in
+//the firmware for CM-700 servo controller
+//for Telebot'a arms and head, as well as
+//the ServoFeedback class. It is part 
+//of the Servo test suite
+//for FIU Discovery Lab Telebot - Arms
 
 import junit.framework.TestCase;
 import TestingTools.ServoTest.ServoControl;
 import TestingTools.ServoTest.ServoFeedback;
-//import TestingTools.ServoTest.PositionsModel;
-//import discoverylab.telebot.master.arms.configurations.*;
 
 public class cm700FirmwareTest extends TestCase {
 
 	private ServoControl controller;
-	private ServoFeedback feedBack;
+	private ServoFeedback feedback;
 	
 	protected void setUp() throws Exception {
 		super.setUp();
 		controller = ServoControl.getSingleton();
-		feedBack = ServoFeedback.getSingleton();
+		feedback = ServoFeedback.getSingleton();
 	}
 
 	protected void tearDown() throws Exception {
 		super.tearDown();
 		controller = null;
-		feedBack = null;
+		feedback = null;
 	}
 	
 	public void testcm700FirmwareFeedback(){
 		
-		//assertNotNull(controller);
-		//assertEquals(true, controller.getSerialConnected());
-		controller.newValue(500, 10);
+				controller.newValue(500, 10);
 		try {
 			Thread.sleep(3000);
 		} catch (InterruptedException e) {
@@ -41,7 +46,14 @@ public class cm700FirmwareTest extends TestCase {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		assertEquals(500, feedBack.getFeedback(10));
+		assertEquals(500, feedback.getFeedback(10));
+	}
+	
+	public void testServoFeedbackGetSingleton()
+	{
+		ServoFeedback feedback2 = ServoFeedback.getSingleton();
+		assertEquals(feedback, feedback2);
+		feedback2 = null;
 	}
 
 }
