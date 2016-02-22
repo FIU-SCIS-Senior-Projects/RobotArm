@@ -285,6 +285,8 @@ public class ServoControl {
 		correctedValue = servoModel.setSevoValue(correctedValue, servoID);
 		setPosition(correctedValue, servoID);
 		//getFeedback(servoID);
+		int currentValue = feedBack.getFeedback(servoID);
+		
 		return correctedValue;
 	}
 	

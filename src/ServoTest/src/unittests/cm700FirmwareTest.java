@@ -16,18 +16,18 @@ import TestingTools.ServoTest.ServoFeedback;
 public class cm700FirmwareTest extends TestCase {
 
 	private ServoControl controller;
-	private ServoFeedback feedBack;
+	private ServoFeedback feedback;
 	
 	protected void setUp() throws Exception {
 		super.setUp();
 		controller = ServoControl.getSingleton();
-		feedBack = ServoFeedback.getSingleton();
+		feedback = ServoFeedback.getSingleton();
 	}
 
 	protected void tearDown() throws Exception {
 		super.tearDown();
 		controller = null;
-		feedBack = null;
+		feedback = null;
 	}
 	
 	public void testcm700FirmwareFeedback(){
@@ -46,7 +46,14 @@ public class cm700FirmwareTest extends TestCase {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		assertEquals(500, feedBack.getFeedback(10));
+		assertEquals(500, feedback.getFeedback(10));
+	}
+	
+	public void testServoFeedbackGetSingleton()
+	{
+		ServoFeedback feedback2 = ServoFeedback.getSingleton();
+		assertEquals(feedback, feedback2);
+		feedback2 = null;
 	}
 
 }

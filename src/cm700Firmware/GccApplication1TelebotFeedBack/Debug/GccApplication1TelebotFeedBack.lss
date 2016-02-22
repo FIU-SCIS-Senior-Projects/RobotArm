@@ -17,19 +17,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
   6 .debug_pubnames 000004bb  00000000  00000000  00001cac  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_info   00001cb5  00000000  00000000  00002167  2**0
+  7 .debug_info   00001cb6  00000000  00000000  00002167  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_abbrev 0000088a  00000000  00000000  00003e1c  2**0
+  8 .debug_abbrev 00000899  00000000  00000000  00003e1d  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_line   000010f3  00000000  00000000  000046a6  2**0
+  9 .debug_line   000010f4  00000000  00000000  000046b6  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_frame  00000314  00000000  00000000  0000579c  2**2
+ 10 .debug_frame  00000314  00000000  00000000  000057ac  2**2
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_str    000007ee  00000000  00000000  00005ab0  2**0
+ 11 .debug_str    000007e8  00000000  00000000  00005ac0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_loc    00001080  00000000  00000000  0000629e  2**0
+ 12 .debug_loc    00001080  00000000  00000000  000062a8  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_ranges 00000050  00000000  00000000  0000731e  2**0
+ 13 .debug_ranges 00000050  00000000  00000000  00007328  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -2144,6 +2144,8 @@ int main(void)
      f78:	20 93 82 06 	sts	0x0682, r18
      f7c:	46 c0       	rjmp	.+140    	; 0x100a <main+0x3fa>
 		}
+		
+		//send servo positions if they have changed since last check
 		for (int j = 0; j<14; j++)
 		{
 			servoID = servoIdList[j];
@@ -2235,11 +2237,11 @@ int main(void)
      ffa:	f2 e0       	ldi	r31, 0x02	; 2
      ffc:	ef 0e       	add	r14, r31
      ffe:	f1 1c       	adc	r15, r1
-			}
-			msgBuf0[msgBufPointer]=ReceivedData;
 //			msgBuf1[msgBufPointer]=ReceivedData;
 			msgBufPointer++;
 		}
+		
+		//send servo positions if they have changed since last check
 		for (int j = 0; j<14; j++)
     1000:	e6 14       	cp	r14, r6
     1002:	f7 04       	cpc	r15, r7

@@ -233,6 +233,8 @@ int main(void)
 //			msgBuf1[msgBufPointer]=ReceivedData;
 			msgBufPointer++;
 		}
+		
+		//send servo positions if they have changed since last check
 		for (int j = 0; j<14; j++)
 		{
 			servoID = servoIdList[j];

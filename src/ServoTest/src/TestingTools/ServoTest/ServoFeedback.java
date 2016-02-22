@@ -1,4 +1,9 @@
 package TestingTools.ServoTest;
+//ServoFeedBack class
+//@author Curtis Cox
+//ServoFeedback implements SerialPortEventListener
+//for the Servo test suite
+//for FIU Discovery Lab Telebot - Arms
 
 import jssc.SerialPort;
 import jssc.SerialPortEvent;

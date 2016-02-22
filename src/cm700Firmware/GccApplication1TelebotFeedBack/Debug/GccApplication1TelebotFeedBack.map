@@ -829,26 +829,26 @@ END GROUP
  .debug_pubnames
                 0x000003c1       0xfa C:\Users\Curtis\Downloads\embeded_c(cm700_v1.02)\lib\libserial.a(serial.o)
 
-.debug_info     0x00000000     0x1cb5
+.debug_info     0x00000000     0x1cb6
  *(.debug_info .gnu.linkonce.wi.*)
- .debug_info    0x00000000      0xd8a main.o
- .debug_info    0x00000d8a      0x5d9 C:\Users\Curtis\Downloads\embeded_c(cm700_v1.02)\lib\libdynamixel.a(dynamixel.o)
- .debug_info    0x00001363      0x486 C:\Users\Curtis\Downloads\embeded_c(cm700_v1.02)\lib\libdynamixel.a(dxl_hal.o)
- .debug_info    0x000017e9      0x4cc C:\Users\Curtis\Downloads\embeded_c(cm700_v1.02)\lib\libserial.a(serial.o)
+ .debug_info    0x00000000      0xd8b main.o
+ .debug_info    0x00000d8b      0x5d9 C:\Users\Curtis\Downloads\embeded_c(cm700_v1.02)\lib\libdynamixel.a(dynamixel.o)
+ .debug_info    0x00001364      0x486 C:\Users\Curtis\Downloads\embeded_c(cm700_v1.02)\lib\libdynamixel.a(dxl_hal.o)
+ .debug_info    0x000017ea      0x4cc C:\Users\Curtis\Downloads\embeded_c(cm700_v1.02)\lib\libserial.a(serial.o)
 
-.debug_abbrev   0x00000000      0x88a
+.debug_abbrev   0x00000000      0x899
  *(.debug_abbrev)
- .debug_abbrev  0x00000000      0x2c9 main.o
- .debug_abbrev  0x000002c9      0x21d C:\Users\Curtis\Downloads\embeded_c(cm700_v1.02)\lib\libdynamixel.a(dynamixel.o)
- .debug_abbrev  0x000004e6      0x173 C:\Users\Curtis\Downloads\embeded_c(cm700_v1.02)\lib\libdynamixel.a(dxl_hal.o)
- .debug_abbrev  0x00000659      0x231 C:\Users\Curtis\Downloads\embeded_c(cm700_v1.02)\lib\libserial.a(serial.o)
+ .debug_abbrev  0x00000000      0x2d8 main.o
+ .debug_abbrev  0x000002d8      0x21d C:\Users\Curtis\Downloads\embeded_c(cm700_v1.02)\lib\libdynamixel.a(dynamixel.o)
+ .debug_abbrev  0x000004f5      0x173 C:\Users\Curtis\Downloads\embeded_c(cm700_v1.02)\lib\libdynamixel.a(dxl_hal.o)
+ .debug_abbrev  0x00000668      0x231 C:\Users\Curtis\Downloads\embeded_c(cm700_v1.02)\lib\libserial.a(serial.o)
 
-.debug_line     0x00000000     0x10f3
+.debug_line     0x00000000     0x10f4
  *(.debug_line .debug_line.* .debug_line_end)
- .debug_line    0x00000000      0x4f2 main.o
- .debug_line    0x000004f2      0x533 C:\Users\Curtis\Downloads\embeded_c(cm700_v1.02)\lib\libdynamixel.a(dynamixel.o)
- .debug_line    0x00000a25      0x38e C:\Users\Curtis\Downloads\embeded_c(cm700_v1.02)\lib\libdynamixel.a(dxl_hal.o)
- .debug_line    0x00000db3      0x340 C:\Users\Curtis\Downloads\embeded_c(cm700_v1.02)\lib\libserial.a(serial.o)
+ .debug_line    0x00000000      0x4f3 main.o
+ .debug_line    0x000004f3      0x533 C:\Users\Curtis\Downloads\embeded_c(cm700_v1.02)\lib\libdynamixel.a(dynamixel.o)
+ .debug_line    0x00000a26      0x38e C:\Users\Curtis\Downloads\embeded_c(cm700_v1.02)\lib\libdynamixel.a(dxl_hal.o)
+ .debug_line    0x00000db4      0x340 C:\Users\Curtis\Downloads\embeded_c(cm700_v1.02)\lib\libserial.a(serial.o)
 
 .debug_frame    0x00000000      0x314
  *(.debug_frame)
@@ -857,15 +857,15 @@ END GROUP
  .debug_frame   0x000001b4       0xc0 C:\Users\Curtis\Downloads\embeded_c(cm700_v1.02)\lib\libdynamixel.a(dxl_hal.o)
  .debug_frame   0x00000274       0xa0 C:\Users\Curtis\Downloads\embeded_c(cm700_v1.02)\lib\libserial.a(serial.o)
 
-.debug_str      0x00000000      0x7ee
+.debug_str      0x00000000      0x7e8
  *(.debug_str)
- .debug_str     0x00000000      0x338 main.o
-                                0x381 (size before relaxing)
- .debug_str     0x00000338      0x21c C:\Users\Curtis\Downloads\embeded_c(cm700_v1.02)\lib\libdynamixel.a(dynamixel.o)
+ .debug_str     0x00000000      0x332 main.o
+                                0x37b (size before relaxing)
+ .debug_str     0x00000332      0x21c C:\Users\Curtis\Downloads\embeded_c(cm700_v1.02)\lib\libdynamixel.a(dynamixel.o)
                                 0x2c2 (size before relaxing)
- .debug_str     0x00000554      0x1a0 C:\Users\Curtis\Downloads\embeded_c(cm700_v1.02)\lib\libdynamixel.a(dxl_hal.o)
+ .debug_str     0x0000054e      0x1a0 C:\Users\Curtis\Downloads\embeded_c(cm700_v1.02)\lib\libdynamixel.a(dxl_hal.o)
                                 0x29d (size before relaxing)
- .debug_str     0x000006f4       0xfa C:\Users\Curtis\Downloads\embeded_c(cm700_v1.02)\lib\libserial.a(serial.o)
+ .debug_str     0x000006ee       0xfa C:\Users\Curtis\Downloads\embeded_c(cm700_v1.02)\lib\libserial.a(serial.o)
                                 0x1c6 (size before relaxing)
 
 .debug_loc      0x00000000     0x1080
