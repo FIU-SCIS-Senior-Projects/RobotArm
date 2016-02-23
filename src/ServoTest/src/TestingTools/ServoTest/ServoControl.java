@@ -17,6 +17,7 @@ public class ServoControl {
 	private static ServoControl singleton = null;
 	private PositionsModel servoModel = null;
 	private ServoFeedback feedBack = null;
+	private ServoFeedbackTestGui gui = null;
 	public SerialPort serialPort;
 	private Boolean serialConnected 				= false;
 	private String serialPortName;
@@ -284,10 +285,17 @@ public class ServoControl {
 		setArmToRest(servoID);
 		correctedValue = servoModel.setSevoValue(correctedValue, servoID);
 		setPosition(correctedValue, servoID);
-		//getFeedback(servoID);
-		int currentValue = feedBack.getFeedback(servoID);
-		
+		if(gui != null)
+		{
+			int currentValue = feedBack.getFeedback(servoID);
+			gui.refreshView(servoID, correctedValue, currentValue);
+		}
 		return correctedValue;
+	}
+	
+	public void setGui(ServoFeedbackTestGui gui)
+	{
+		this.gui = gui;
 	}
 	
 	public int getMax(int servoID)
