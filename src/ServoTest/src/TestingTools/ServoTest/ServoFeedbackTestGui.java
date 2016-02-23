@@ -66,14 +66,21 @@ public class ServoFeedbackTestGui extends JFrame
 			s30Value, s31Value, s32Value, s33Value, 
 			s34Value, s35Value;
 		 
+		 JLabel c1Title, c2Title;
+		 
 		 //Format and layout buttons and labels
+		 //Titles
+		 c1Title = new JLabel("Servo Number:");
+		 c1Title.setFont(labelFont);
+		 c2Title = new JLabel("Position: Requested - Current");
+		 c2Title.setFont(labelFont);
+		 
 		 //Head
 		 //Servo 10 - Head Pitch
 		 s10Label = new JLabel("Servo 10 - Head Pitch");
 		 s10Label.setFont(labelFont);
 		 s10Value = new JLabel("---- - ----");
 		 s10Value.setFont(valueFont);
-		 s10Value.setForeground(Color.RED);
 		 s10Button0 = new JButton("Head Looking Down");
 		 s10Button0.setFont(buttonFont);
 		 s10Button0.setHorizontalTextPosition(AbstractButton.CENTER);
@@ -349,6 +356,7 @@ public class ServoFeedbackTestGui extends JFrame
 						.addComponent(s34Button0)
 						.addComponent(s35Button0))
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+						.addComponent(c1Title)
 						.addComponent(s10Label)
 						.addComponent(s10Button1)
 						.addComponent(s11Label)
@@ -378,6 +386,7 @@ public class ServoFeedbackTestGui extends JFrame
 						.addComponent(s35Label)
 		                .addComponent(s35Button1))
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+						.addComponent(c2Title)
 						.addComponent(s10Value)
 						.addComponent(s11Value)
 						.addComponent(s11Button2)
@@ -400,6 +409,9 @@ public class ServoFeedbackTestGui extends JFrame
 
 		//Create the VerticalGroups in the layout
 		 layout.setVerticalGroup(layout.createSequentialGroup()
+				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+						 .addComponent(c1Title)
+						 .addComponent(c2Title))
 				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
 						 .addComponent(s10Label)
 						 .addComponent(s10Value))

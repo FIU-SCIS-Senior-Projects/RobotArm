@@ -287,10 +287,23 @@ public class ServoControl {
 		setPosition(correctedValue, servoID);
 		if(gui != null)
 		{
-			int currentValue = feedBack.getFeedback(servoID);
-			gui.refreshView(servoID, correctedValue, currentValue);
+			refreshFeedback();
 		}
 		return correctedValue;
+	}
+	
+	private void refreshFeedback()
+	{
+		int servoID;
+		int currentValue;
+		int requestedValue;
+		for(int i = 0; i<14; i++)
+		{
+			servoID = servoIDList[i];
+			currentValue = feedBack.getFeedback(servoID);
+			requestedValue = servoModel.getPosition(servoID); 
+			gui.refreshView(servoID, requestedValue, currentValue);
+		}
 	}
 	
 	public void setGui(ServoFeedbackTestGui gui)
