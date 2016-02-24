@@ -35,7 +35,7 @@
 #define MSG_BUF_SIZE			128
 #define SERVO_SPEED_DEFAULT_VALUE	100
 
-// Defaulat setting
+// Default setting
 #define DEFAULT_BAUDNUM		1 // 1Mbps
 #define DEFAULT_ID			1
 
@@ -63,7 +63,9 @@ int main(void)
 	int pGain = 1;
 	int iGain = 0;
 	int dGain = 0;
-	//int Value = 0;
+	int readingData = 0;
+	unsigned char ReceivedData;
+	
 	msgBuf2[0] = '<';
 	msgBuf2[3] = ' ';
 	msgBuf2[8] = '>';
@@ -80,50 +82,54 @@ int main(void)
 
 	for( int i = 0; i < 14; i++)
 	{
+		servoID = servoIdList[i];
 		//Set PID values
-		dxl_write_word(servoIdList[i], P_PGAIN, pGain);
+		dxl_write_word(servoID, P_PGAIN, pGain);
 		_delay_ms(5);
-		dxl_write_word(servoIdList[i], P_IGAIN, iGain);
+		dxl_write_word(servoID, P_IGAIN, iGain);
 		_delay_ms(5);
-		dxl_write_word(servoIdList[i], P_DGAIN, dGain);
+		dxl_write_word(servoID, P_DGAIN, dGain);
 		_delay_ms(5);
 		// Set goal speed
-		dxl_write_word(servoIdList[i], P_GOAL_SPEED_L, SERVO_SPEED_DEFAULT_VALUE);
+		dxl_write_word(servoID, P_GOAL_SPEED_L, SERVO_SPEED_DEFAULT_VALUE);
 		_delay_ms(5);
-		dxl_write_word(servoIdList[i], P_STATUS_RETURN_LEVEL, 1);
+		dxl_write_word(servoID, P_STATUS_RETURN_LEVEL, 1);
 		_delay_ms(5);
 	}
 	
 	while(1)
 	{	
-		unsigned char ReceivedData = getchar();		
-		if(ReceivedData == '<')
+		ReceivedData = getchar();	
+		if(ReceivedData == '#')
 		{
+			//skip to feedback
+		}	
+		else if(ReceivedData == '<')
+		{
+			readingData = 1;
 			msgBufPointer = 0;
 		}
 		else if(ReceivedData == '>')
 		{
+			readingData = 0;
 			msgBuf0[msgBufPointer]='\0';
 			memcpy ( msgBuf1, msgBuf0, strlen((char*)msgBuf0) );
-//			printf("(1) %s-%s\n",msgBuf0,msgBuf1);
 			char * pch1;
 			char * pch2;
 			int cnt = 0;
 			pch1 = strtok ((char*)msgBuf0," ");
 			while (pch1 != NULL)
 			{
-//				printf ("%d[%s]\n",cnt++,pch1);
 				cnt++;
 				pch1 = strtok (NULL, " ");
 			}
 			
 			pch2 = strtok ((char*)msgBuf1," ");
-//			printf("(2) %s-%s\n",msgBuf1,pch2);
 			if ( cnt == 1 )
 			{
 				if(strncmp (pch2,"gn",2)==0)
 				{
-					//printf("cm-700\n");
+					printf("cm-700\n");
 				}
 			}
 			else if (cnt == 2)
@@ -133,7 +139,6 @@ int main(void)
 				servoSpeed = -1;
 				while (pch2 != NULL)
 				{
-					//					printf ("%d[%s]\n",cnt++,pch2);
 					if (cnt == 2)
 					{
 						servoID = atoi(pch2);
@@ -146,7 +151,6 @@ int main(void)
 					pch2 = strtok (NULL, " ");
 				}				
 				dxl_write_word(servoID, P_GOAL_POSITION_L, servoPosition);
-				//printf("[%d][%d]\n",servoID,servoPosition);
 			}
 			else if (cnt == 3)
 			{
@@ -155,7 +159,6 @@ int main(void)
 				servoSpeed = -1;
 				while (pch2 != NULL)
 				{
-					//					printf ("%d[%s]\n",cnt++,pch2);
 					if (cnt == 3)
 					{
 						servoID = atoi(pch2);
@@ -171,7 +174,6 @@ int main(void)
 					cnt--;
 					pch2 = strtok (NULL, " ");
 				}
-				//				printf("%d %d %d\n",servoID,servoPosition,servoSpeed);
 				// Set pGain 
 				dxl_write_word( servoID, P_PGAIN, P_PGAIN_DEFAULT_VALUE );
 				_delay_ms(1);
@@ -180,8 +182,6 @@ int main(void)
 				_delay_ms(1);
 				// Set goal position
 				dxl_write_word( servoID, P_GOAL_POSITION_L, servoPosition );
-		
-				//printf("[%d][%d][%d][%d]\n",servoID,servoPosition,servoSpeed,pGain);
 			}
 			else if (cnt == 4)
 			{
@@ -191,7 +191,6 @@ int main(void)
 				pGain = 3;
 				while (pch2 != NULL)
 				{
-//					printf ("%d[%s]\n",cnt++,pch2);
 					if (cnt == 4)
 					{ 
 						servoID = atoi(pch2);
@@ -212,17 +211,18 @@ int main(void)
 					cnt--;
 					pch2 = strtok (NULL, " ");
 				}
-//				printf("%d %d %d\n",servoID,servoPosition,servoSpeed);
 				// Set pGain
 				dxl_write_word( servoID, P_PGAIN, pGain );
 				_delay_ms(1);
 				// Set goal speed
-				dxl_write_word( servoID, P_GOAL_SPEED_L, servoSpeed );
-				_delay_ms(1);
+				if(servoSpeed != 0)
+				{
+					dxl_write_word( servoID, P_GOAL_SPEED_L, servoSpeed );
+					_delay_ms(1);
+				}
 				// Set goal position
 				dxl_write_word( servoID, P_GOAL_POSITION_L, servoPosition );
 				_delay_ms(1);
-				//printf("[%d][%d][%d][%d]\n",servoID,servoPosition,servoSpeed,pGain);
 			}
 			
 			for(int i = 0; i < MSG_BUF_SIZE; i++)
@@ -230,7 +230,6 @@ int main(void)
 				msgBuf0[i]=0x00;
 				msgBuf1[i]=0x00;
 			}
-//			i = atoi (buffer);
 		}
 		else
 		{			
@@ -244,39 +243,38 @@ int main(void)
 				}
 			}
 			msgBuf0[msgBufPointer]=ReceivedData;
-//			msgBuf1[msgBufPointer]=ReceivedData;
 			msgBufPointer++;
 		}
 		
 		//send servo positions if they have changed since last check
-		for (int j = 0; j<14; j++)
+		if(!readingData)
 		{
-			servoID = servoIdList[j];
-			wPresentPos = dxl_read_word(servoID, P_PRESENT_POSITION_L);
-			_delay_ms(1);
-			CommStatus = dxl_get_result();
-			_delay_ms(1);
-			if(CommStatus == COMM_RXSUCCESS)
+			for (int j = 0; j<14; j++)
 			{
-				if(currentPosition[j] != wPresentPos)
+				servoID = servoIdList[j];
+				wPresentPos = dxl_read_word(servoID, P_PRESENT_POSITION_L);
+				_delay_ms(1);
+				CommStatus = dxl_get_result();
+				_delay_ms(1);
+				if(CommStatus == COMM_RXSUCCESS)
 				{
-					currentPosition[j] = wPresentPos;
-					msgBuf2[1] = servoID/10 + '0';
-					msgBuf2[2] = servoID%10 + '0';
-					msgBuf2[4] = wPresentPos/1000 +'0';
-					wPresentPos %= 1000;
-					msgBuf2[5] = wPresentPos/100 +'0';
-					wPresentPos %= 100;
-					msgBuf2[6] = wPresentPos/10 + '0';
-					msgBuf2[7] = wPresentPos%10 + '0';
-					for(int k = 0; k<10; k++)
-						putchar(msgBuf2[k]);
+					if(currentPosition[j] != wPresentPos)
+					{
+						currentPosition[j] = wPresentPos;
+						msgBuf2[1] = servoID/10 + '0';
+						msgBuf2[2] = servoID%10 + '0';
+						msgBuf2[4] = wPresentPos/1000 +'0';
+						wPresentPos %= 1000;
+						msgBuf2[5] = wPresentPos/100 +'0';
+						wPresentPos %= 100;
+						msgBuf2[6] = wPresentPos/10 + '0';
+						msgBuf2[7] = wPresentPos%10 + '0';
+						for(int k = 0; k<10; k++)
+							putchar(msgBuf2[k]);
+					}
 				}
 			}
-		}
-			
-//		printf( "%d   %d\n",GoalPos[index], wPresentPos );
-
+		}		
 	}
 
 	return 0;

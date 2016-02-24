@@ -41,21 +41,23 @@ public class ServoFeedback implements SerialPortEventListener {
 	
 	public int getFeedback(int servoID)
 	{
+
 		return currentPositions.get(servoID);
 	}
 
 	@Override
-	public void serialEvent(SerialPortEvent arg0) {
-		String feedBack = " ";
+	public void serialEvent(SerialPortEvent arg0) 
+	{
+		String feedBack = null;
+		try {
+			feedBack = serialPort.readString(10);
+			System.out.println(feedBack);
+		} catch (SerialPortException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		while(feedBack != null)
 		{
-			try {
-				feedBack = serialPort.readString(10);
-				System.out.println(feedBack);
-			} catch (SerialPortException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			if(feedBack.startsWith("<"))
 			{
 				int servoID = Integer.parseInt(feedBack.substring(1, 3));
@@ -86,8 +88,20 @@ public class ServoFeedback implements SerialPortEventListener {
 					}
 				}
 			}
+			try {
+				feedBack = serialPort.readString(10);
+				System.out.println(feedBack);
+			} catch (SerialPortException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		
+		try {
+			serialPort.writeByte((byte)'#');
+		} catch (SerialPortException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
 	}
 	
 }

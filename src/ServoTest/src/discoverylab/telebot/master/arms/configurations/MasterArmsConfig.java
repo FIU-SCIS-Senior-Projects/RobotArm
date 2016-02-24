@@ -2,7 +2,7 @@ package discoverylab.telebot.master.arms.configurations;
 
 public class MasterArmsConfig {
 	
-	public static final int HEAD_PITCH_MAX = 2600;
+	public static final int HEAD_PITCH_MAX = 3600; //2600;
 	public static final int HEAD_PITCH_MIN = 2048;
 	public static final int HEAD_YAW_MAX = 2600;
 	public static final int HEAD_YAW_MIN = 1500;

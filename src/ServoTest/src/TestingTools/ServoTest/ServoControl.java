@@ -258,7 +258,7 @@ public class ServoControl {
 	{
 		if(serialConnected){
 			try{
-			String commandString = "<" + servoID + " " + value + " 0>\r"; //100 = servoSpeed
+			String commandString = "<" + servoID + " " + value + " 0>#"; //default servoSpeed
 			System.out.println(commandString);
 			serialPort.writeString(commandString);
 			}
@@ -275,7 +275,7 @@ public class ServoControl {
 	//selected servo. It then updates the model by 
 	//calling setServoValue. If value is outside of
 	//the valid range for servoID, setServoValue will
-	//return the appropriately correcte value. This
+	//return the appropriately corrected value. This
 	//new value will then be sent to the servo by
 	//calling setPosition. The corrected value is 
 	//returned to the calling method.
@@ -294,6 +294,12 @@ public class ServoControl {
 	
 	private void refreshFeedback()
 	{
+		try {
+			serialPort.writeByte((byte)'#');
+		} catch (SerialPortException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		int servoID;
 		int currentValue;
 		int requestedValue;
