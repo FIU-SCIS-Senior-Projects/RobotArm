@@ -258,7 +258,7 @@ public class ServoControl {
 	{
 		if(serialConnected){
 			try{
-			String commandString = "<" + servoID + " " + value + " 100>\r"; //100 = servoSpeed
+			String commandString = "<" + servoID + " " + value + " 0>\r"; //100 = servoSpeed
 			System.out.println(commandString);
 			serialPort.writeString(commandString);
 			}
