@@ -6,13 +6,10 @@ package TestingTools.ServoTest;
 //for FIU Discovery Lab Telebot - Arms
 
 import jssc.SerialPort;
-import jssc.SerialPortEvent;
-import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 import java.util.HashMap;
-//import TestingTools.ServoTest.ServoControl;
 
-public class ServoFeedback implements SerialPortEventListener {
+public class ServoFeedback {
 
 	private static ServoFeedback singleton = null;
 	private SerialPort serialPort;
@@ -22,14 +19,8 @@ public class ServoFeedback implements SerialPortEventListener {
 	private ServoFeedback()
 	{
 		currentPositions = new HashMap<Integer, Integer>();
-		
 		for(int i =0; i<14; i++)
 			currentPositions.put(servoIDList[i], -1);
-	}
-	
-	public void setSerialPort(SerialPort port)
-	{
-		serialPort = port;
 	}
 	
 	public static ServoFeedback getSingleton()
@@ -39,14 +30,18 @@ public class ServoFeedback implements SerialPortEventListener {
 		return singleton;
 	}
 	
+	public void setSerialPort(SerialPort port)
+	{
+		serialPort = port;
+	}
+	
 	public int getFeedback(int servoID)
 	{
 
 		return currentPositions.get(servoID);
 	}
 
-	@Override
-	public void serialEvent(SerialPortEvent arg0) 
+	public void readSerialData() 
 	{
 		String feedBack = null;
 		try {
@@ -96,12 +91,5 @@ public class ServoFeedback implements SerialPortEventListener {
 				e.printStackTrace();
 			}
 		}
-		try {
-			serialPort.writeByte((byte)'#');
-		} catch (SerialPortException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
 	}
-	
 }

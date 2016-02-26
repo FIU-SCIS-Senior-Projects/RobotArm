@@ -27,7 +27,7 @@
 #define P_MOVING				46
 
 #define P_PGAIN		28
-#define P_PGAIN_DEFAULT_VALUE 3
+#define P_PGAIN_DEFAULT_VALUE 32
 #define P_IGAIN		27
 #define P_DGAIN		26
 #define P_GOAL_SPEED_L		32
@@ -60,10 +60,9 @@ int main(void)
 	int servoID = 0;
 	int servoPosition = 0;
 	int servoSpeed = 0;
-	int pGain = 1;
+	int pGain = 128;
 	int iGain = 0;
 	int dGain = 0;
-	int readingData = 0;
 	unsigned char ReceivedData;
 	
 	msgBuf2[0] = '<';
@@ -100,18 +99,42 @@ int main(void)
 	while(1)
 	{	
 		ReceivedData = getchar();	
-		if(ReceivedData == '#')
+		if(ReceivedData == '?')
 		{
-			//skip to feedback
+			//send servo positions if they have changed since last check
+			for (int j = 0; j<14; j++)
+			{
+				servoID = servoIdList[j];
+				wPresentPos = dxl_read_word(servoID, P_PRESENT_POSITION_L);
+				_delay_ms(1);
+				CommStatus = dxl_get_result();
+				_delay_ms(1);
+				if(CommStatus == COMM_RXSUCCESS)
+				{
+					if(currentPosition[j] != wPresentPos)
+					{
+						currentPosition[j] = wPresentPos;
+						msgBuf2[1] = servoID/10 + '0';
+						msgBuf2[2] = servoID%10 + '0';
+						msgBuf2[4] = wPresentPos/1000 +'0';
+						wPresentPos %= 1000;
+						msgBuf2[5] = wPresentPos/100 +'0';
+						wPresentPos %= 100;
+						msgBuf2[6] = wPresentPos/10 + '0';
+						msgBuf2[7] = wPresentPos%10 + '0';
+						for(int k = 0; k<10; k++)
+						putchar(msgBuf2[k]);
+					}
+				}
+			}
+
 		}	
 		else if(ReceivedData == '<')
 		{
-			readingData = 1;
 			msgBufPointer = 0;
 		}
 		else if(ReceivedData == '>')
 		{
-			readingData = 0;
 			msgBuf0[msgBufPointer]='\0';
 			memcpy ( msgBuf1, msgBuf0, strlen((char*)msgBuf0) );
 			char * pch1;
@@ -175,7 +198,7 @@ int main(void)
 					pch2 = strtok (NULL, " ");
 				}
 				// Set pGain 
-				dxl_write_word( servoID, P_PGAIN, P_PGAIN_DEFAULT_VALUE );
+				dxl_write_word( servoID, P_PGAIN, P_PGAIN_DEFAULT_VALUE);
 				_delay_ms(1);
 				// Set goal speed
 				dxl_write_word( servoID, P_GOAL_SPEED_L, servoSpeed );
@@ -212,7 +235,7 @@ int main(void)
 					pch2 = strtok (NULL, " ");
 				}
 				// Set pGain
-				dxl_write_word( servoID, P_PGAIN, pGain );
+				dxl_write_word( servoID, P_PGAIN, pGain);
 				_delay_ms(1);
 				// Set goal speed
 				if(servoSpeed != 0)
@@ -245,38 +268,7 @@ int main(void)
 			msgBuf0[msgBufPointer]=ReceivedData;
 			msgBufPointer++;
 		}
-		
-		//send servo positions if they have changed since last check
-		if(!readingData)
-		{
-			for (int j = 0; j<14; j++)
-			{
-				servoID = servoIdList[j];
-				wPresentPos = dxl_read_word(servoID, P_PRESENT_POSITION_L);
-				_delay_ms(1);
-				CommStatus = dxl_get_result();
-				_delay_ms(1);
-				if(CommStatus == COMM_RXSUCCESS)
-				{
-					if(currentPosition[j] != wPresentPos)
-					{
-						currentPosition[j] = wPresentPos;
-						msgBuf2[1] = servoID/10 + '0';
-						msgBuf2[2] = servoID%10 + '0';
-						msgBuf2[4] = wPresentPos/1000 +'0';
-						wPresentPos %= 1000;
-						msgBuf2[5] = wPresentPos/100 +'0';
-						wPresentPos %= 100;
-						msgBuf2[6] = wPresentPos/10 + '0';
-						msgBuf2[7] = wPresentPos%10 + '0';
-						for(int k = 0; k<10; k++)
-							putchar(msgBuf2[k]);
-					}
-				}
-			}
-		}		
 	}
-
 	return 0;
 }
 
