@@ -47,8 +47,8 @@ public class testServoControl extends TestCase {
 	
 	public void testNewValue(){
 		
-		controller.newValue(3000, 25);
-		assertEquals(3000, model.getPosition(25));
+		controller.newValue(2500, 25);
+		assertEquals(2500, model.getPosition(25));
 		controller.newValue(5000, 25);
 		assertEquals(MasterArmsConfig.WRIST_ROLL_LEFT_MAX, model.getPosition(25));
 		controller.newValue(0, 25);

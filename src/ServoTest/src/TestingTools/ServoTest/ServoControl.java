@@ -8,17 +8,20 @@ import TestingTools.ServoTest.PositionsModel;
 import TestingTools.ServoTest.ServoFeedback;
 import discoverylab.telebot.master.arms.configurations.MasterArmsConfig;
 import jssc.SerialPort;
-//import jssc.SerialPortEventListener;
+import jssc.SerialPortEvent;
+import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
+import java.awt.event.ActionEvent;
 
 
-public class ServoControl {
+public class ServoControl implements SerialPortEventListener {
 	
 	private static ServoControl singleton = null;
 	private PositionsModel servoModel = null;
 	private ServoFeedback feedBack = null;
-	public SerialPort serialPort;
-	private Boolean serialConnected 				= false;
+	private ServoFeedbackTestGui gui = null;
+	private SerialPort serialPort;
+	private Boolean serialConnected = false;
 	private String serialPortName;
 	private Integer baudRate;
 	private Integer dataBits;
@@ -37,7 +40,7 @@ public class ServoControl {
 		feedBack = ServoFeedback.getSingleton();
 		
 		//Serial Port init
-		serialPortName = "Com8"; //"/dev/TelebotArms";
+		serialPortName = "/dev/TelebotArms";
 		baudRate = 57600;
 		dataBits = SerialPort.DATABITS_8;
 		stopBits = SerialPort.STOPBITS_1;
@@ -50,9 +53,8 @@ public class ServoControl {
 		
 		feedBack.setSerialPort(serialPort);
 		try {
-			serialPort.addEventListener(feedBack, eventMask);
+			serialPort.addEventListener(this, eventMask);
 		} catch (SerialPortException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	
@@ -62,7 +64,6 @@ public class ServoControl {
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -75,7 +76,8 @@ public class ServoControl {
 	}
 	
 	//This method was copied from:
-	/* CoreSlaveComponent.java
+	/* Discovery Lab github Telebot files
+	 * CoreSlaveComponent.java
 	 * @author Irvin Steve Cardenas
 	 */
 	//To ensure that for testing the serial port is opened 
@@ -257,7 +259,7 @@ public class ServoControl {
 	{
 		if(serialConnected){
 			try{
-			String commandString = "<" + servoID + " " + value + " 100>\r"; //100 = servoSpeed
+			String commandString = "<" + servoID + " " + value + " 150>?"; //50 servoSpeed
 			System.out.println(commandString);
 			serialPort.writeString(commandString);
 			}
@@ -267,6 +269,8 @@ public class ServoControl {
 		}
 		else
 			System.out.println("Cannot set new Position. Serial port not open.\n");
+		if(gui != null)
+			refreshFeedback();
 	}
 	
 	//newValue takes a servo position value and servoID
@@ -274,7 +278,7 @@ public class ServoControl {
 	//selected servo. It then updates the model by 
 	//calling setServoValue. If value is outside of
 	//the valid range for servoID, setServoValue will
-	//return the appropriately correcte value. This
+	//return the appropriately corrected value. This
 	//new value will then be sent to the servo by
 	//calling setPosition. The corrected value is 
 	//returned to the calling method.
@@ -284,10 +288,39 @@ public class ServoControl {
 		setArmToRest(servoID);
 		correctedValue = servoModel.setSevoValue(correctedValue, servoID);
 		setPosition(correctedValue, servoID);
-		//getFeedback(servoID);
-		int currentValue = feedBack.getFeedback(servoID);
-		
 		return correctedValue;
+	}
+	
+	private void refreshFeedback()
+	{
+		try {
+			serialPort.writeByte((byte)'?');
+		} catch (SerialPortException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		int servoID;
+		int currentValue;
+		int requestedValue;
+		for(int i = 0; i<14; i++)
+		{
+			servoID = servoIDList[i];
+			currentValue = feedBack.getFeedback(servoID);
+			requestedValue = servoModel.getPosition(servoID); 
+			gui.refreshView(servoID, requestedValue, currentValue);
+            ActionEvent e = new ActionEvent(gui, 2345, "00 Paint");
+			gui.actionPerformed(e);
+		}
+	}
+	
+	public void setGui(ServoFeedbackTestGui gui)
+	{
+		this.gui = gui;
+	}
+	
+	public int getRest(int servoID)
+	{
+		return servoModel.getRest(servoID);
 	}
 	
 	public int getMax(int servoID)
@@ -298,6 +331,13 @@ public class ServoControl {
 	public int getMin(int servoID)
 	{
 		return servoModel.getMin(servoID);
+	}
+
+	@Override
+	public void serialEvent(SerialPortEvent arg0) {
+		feedBack.readSerialData();
+		if(gui != null)
+			refreshFeedback();
 	}
 	
 }

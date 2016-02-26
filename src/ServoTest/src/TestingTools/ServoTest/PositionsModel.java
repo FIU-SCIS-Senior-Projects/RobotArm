@@ -13,6 +13,7 @@ public class PositionsModel{
 	private HashMap<Integer, Integer> maximum;
 	private HashMap<Integer, Integer> minimum;
 	private HashMap<Integer, Integer> position;
+	private HashMap<Integer, Integer> restPosition;
 	
 	
 	//Constructor is Private to force Singleton implementation
@@ -22,6 +23,7 @@ public class PositionsModel{
 		maximum = new HashMap<Integer, Integer>();
 		minimum = new HashMap<Integer, Integer>();
 		position = new HashMap<Integer, Integer>();
+		restPosition = new HashMap<Integer, Integer>();
 		
 		//Populate maximum
 		maximum.put(10, MasterArmsConfig.HEAD_PITCH_MAX);
@@ -71,6 +73,22 @@ public class PositionsModel{
 		position.put(34, MasterArmsConfig.FOREARM_YAW_RIGHT_REST);
 		position.put(35, MasterArmsConfig.WRIST_ROLL_RIGHT_REST);
 		
+		//Populate restPosition
+		restPosition.put(10, MasterArmsConfig.HEAD_PITCH_REST);
+		restPosition.put(11, MasterArmsConfig.HEAD_YAW_REST);
+		restPosition.put(20, MasterArmsConfig.ARM_PITCH_LEFT_REST);
+		restPosition.put(21, MasterArmsConfig.ARM_ROLL_LEFT_REST);
+		restPosition.put(22, MasterArmsConfig.ARM_YAW_LEFT_REST);
+		restPosition.put(23, MasterArmsConfig.ELBOW_ROLL_LEFT_REST);
+		restPosition.put(24, MasterArmsConfig.FOREARM_YAW_LEFT_REST);
+		restPosition.put(25, MasterArmsConfig.WRIST_ROLL_LEFT_REST);
+		restPosition.put(30, MasterArmsConfig.ARM_PITCH_RIGHT_REST);
+		restPosition.put(31, MasterArmsConfig.ARM_ROLL_RIGHT_REST);
+		restPosition.put(32, MasterArmsConfig.ARM_YAW_RIGHT_REST);
+		restPosition.put(33, MasterArmsConfig.ELBOW_ROLL_RIGHT_REST);
+		restPosition.put(34, MasterArmsConfig.FOREARM_YAW_RIGHT_REST);
+		restPosition.put(35, MasterArmsConfig.WRIST_ROLL_RIGHT_REST);
+		
 	}
 
 	//getSingleton returns a reference to the singleton
@@ -95,6 +113,11 @@ public class PositionsModel{
 	public int getMin(int servoID)
 	{
 		return minimum.get(servoID);
+	}
+	
+	public int getRest(int servoID)
+	{
+		return restPosition.get(servoID);
 	}
 	
 	//validateValue checks that the desired value is
@@ -134,7 +157,4 @@ public class PositionsModel{
 		
 		return finalValue;
 	}
-	
-
-	
 }

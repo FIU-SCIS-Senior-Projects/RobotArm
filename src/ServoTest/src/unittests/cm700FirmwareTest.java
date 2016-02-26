@@ -32,7 +32,7 @@ public class cm700FirmwareTest extends TestCase {
 	
 	public void testcm700FirmwareFeedback(){
 		
-				controller.newValue(500, 10);
+				controller.newValue(2402, 24);
 		try {
 			Thread.sleep(3000);
 		} catch (InterruptedException e) {
@@ -46,7 +46,7 @@ public class cm700FirmwareTest extends TestCase {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		assertEquals(500, feedback.getFeedback(10));
+		assertEquals(2402, feedback.getFeedback(24));
 	}
 	
 	public void testServoFeedbackGetSingleton()
