@@ -8,18 +8,18 @@ public class MasterArmsConfig {
 	public static final int HEAD_YAW_MIN = 1500;
 	
 	public static final int ARM_ROLL_LEFT_MAX = 3600; 
-	public static final int ARM_ROLL_LEFT_MIN = 1600; //2048;
+	public static final int ARM_ROLL_LEFT_MIN = 2152; //2048;
 	public static final int ARM_PITCH_LEFT_MAX = 4000; //3600; 
-	public static final int ARM_PITCH_LEFT_MIN = 2048;
-	public static final int ARM_YAW_LEFT_MAX = 3072; //1700; //3072; 
+	public static final int ARM_PITCH_LEFT_MIN = 2560;
+	public static final int ARM_YAW_LEFT_MAX = 1700; //1700; //3072; 
 	public static final int ARM_YAW_LEFT_MIN = 512; //200; //1024;
 
 	public static final int ARM_ROLL_RIGHT_MAX = 2048;
 	public static final int ARM_ROLL_RIGHT_MIN = 600;
 	public static final int ARM_PITCH_RIGHT_MAX = 2048;
 	public static final int ARM_PITCH_RIGHT_MIN = 600;
-	public static final int ARM_YAW_RIGHT_MAX = 4095; //3072;
-	public static final int ARM_YAW_RIGHT_MIN = 1536; //2400; //1024;
+	public static final int ARM_YAW_RIGHT_MAX = 3750; //3072;
+	public static final int ARM_YAW_RIGHT_MIN = 2562; //2400; //1024;
 	
 	public static final int ELBOW_ROLL_LEFT_MAX = 3072; 
 	public static final int ELBOW_ROLL_LEFT_MIN = 2048;
@@ -61,4 +61,8 @@ public class MasterArmsConfig {
 	public static final int WRIST_ROLL_LEFT_REST = 2048; //2010; //2048;
 	
 	public static final int WRIST_ROLL_RIGHT_REST = 2048;
+	
+	public static final double SERVO_SENSOR_RATIO = 4096.0/360; //11.377777778;
+	
+	public static final double GEARED_SERVO_SENSOR_RATIO = (4096.0/360)*(60.0/36); //18.962962963;
 }
