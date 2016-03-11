@@ -1,0 +1,65 @@
+HEAD_PAN_RANGE = 97
+HEAD_TILT_RANGE = 53
+SHOULDER_PITCH_RANGE = 127
+SHOULDER_ROLL_RANGE = 127
+ARM_YAW_RANGE = 104
+ELBOW_ROLL_RANGE = 90
+FOREARM_YAW_RANGE = 180
+WRIST_ROLL_RANGE = 180
+
+head_x_low = 360
+head_y_low = 360
+head_z_low = 360
+r_shoulder_x_low = 360
+r_shoulder_y_low = 360
+r_shoulder_z_low = 360
+l_shoulder_x_low = 360
+l_shoulder_y_low = 360
+l_shoulder_z_low = 360
+r_elbow_x_low = 360
+r_elbow_y_low = 360
+r_elbow_z_low = 360
+l_elbow_x_low = 360
+l_elbow_y_low = 360
+l_elbow_z_low = 360
+r_wrist_x_low = 360
+r_wrist_y_low = 360
+r_wrist_z_low = 360
+l_wrist_x_low = 360
+l_wrist_y_low = 360
+l_wrist_z_low = 360
+
+servoMin = 1024
+servoMax = 3072
+ratio = 4096/360
+
+case = [75, 80, 90, 100, 90, 20, -1, 0, -18, -60, -65, 65, -75, 100, -90, 90, 180]
+for i in case:
+    r_wrist_x = i
+    r_wrist_y = i
+    r_wrist_z = i
+
+    #wrist
+    normalized_z = r_wrist_z - r_wrist_z_low
+    if normalized_z < 0:
+        normalized_z = 0
+        r_wrist_z_low = r_wrist_z
+    if normalized_z > WRIST_ROLL_RANGE:
+        normalized_z = WRIST_ROLL_RANGE
+        r_wrist_z_low = r_wrist_z - WRIST_ROLL_RANGE
+
+    #forearm
+    normalized_x = r_wrist_x - r_wrist_x_low
+    if normalized_x < 0:
+        normalized_x = 0
+        r_wrist_x_low = r_wrist_x
+    if normalized_x > FOREARM_YAW_RANGE:
+        normalized_x = FOREARM_YAW_RANGE
+        r_wrist_x_low = r_wrist_x - FOREARM_YAW_RANGE
+
+    servoPosition = normalized_x * ratio + servoMin
+
+    print "r_wrist_x: ", r_wrist_x
+    print "normalized x: ", normalized_x
+    print "r_wrist_x_low: ", r_wrist_x_low
+    print "servoPosition: ", servoPosition
