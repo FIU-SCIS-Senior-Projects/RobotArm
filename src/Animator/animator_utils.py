@@ -1770,15 +1770,17 @@ class Bone(SkelNode):
             data = self.vs_node.input_ports[0].data
             data_type = self.vs_node.input_ports[0].data_type
             if data is not None:
+                #print "Bone Name: ", self.name, "data: ", data
                 if data_type != 'Q':
                     data = data.toQuaternion()
                 
                 tared_orient = data.copy()
                 
                 self.orientation = tared_orient.toMatrix4()
-#==========================================================================                
-#                print "1[",data,"]{",tared_orient,"}(",self.orientation,")"
-#                print data," = ",tared_orient," $ ",self.orientation
+#==========================================================================
+                #print "Bone.update name: ", self.name
+                #print "1[",data,"]{",tared_orient,"}(",self.orientation,")"
+                #print data," = ",tared_orient," $ ",self.orientation
             else:
                 # print 'No orientation!'
                 pass
@@ -1958,13 +1960,114 @@ def copyBone(bone, selected_list, name_list, parent=None):
             tmp_list += copyBone(child, selected_list, name_list, copy)
     return tmp_list
 
+#calculateJointAngles is passed three parameters:
+    #par_bone - the Bone object closest to the spine
+    #child_bone - the Bone object farthest from the spine
+    #joint - an int representing the type of joint
+        #1 - wrist
+        #2 - elbow
+        #3 - shoulder
+        #4 - head
+#it uses the orientation parameter of the Bone
+def calculateJointAngles(par_bone, child_bone, joint):
+
+    orientPar = par_bone.vs_node.input_ports[0].data
+    orientParEul = par_bone.vs_node.input_ports[0].data.toEuler()
+    orientChild = child_bone.vs_node.input_ports[0].data
+    orientChildEul = child_bone.vs_node.input_ports[0].data.toEuler()
+
+    #print "Parent data: ", orientPar, "Parent Euler: ", orientParEul
+    #print "Child data: ", orientChild, " Child Euler: ", orientChildEul
+
+
+    if joint == 4:
+        angles = orientChildEul - orientParEul
+        return (math.degrees(angles[0]), math.degrees(angles[1]), math.degrees(angles[2]))
+
+    if joint == 1:
+        forward0 = orientPar * Vector3(UNIT_Z)
+        up0 = orientPar * Vector3(UNIT_Y)
+        right0 = orientPar * Vector3(UNIT_X)
+
+        forward1 = orientChild * Vector3(UNIT_Z)
+        up1 = orientChild * Vector3(UNIT_Y)
+        right1 = orientChild * Vector3(UNIT_X)
+        #print "Parent Forward: ", forward0, " PArent Up: ", up0, " Parent right: ", right0
+
+        p1 = forward0.dot(right0)
+        p2 = right0.dot(up0)
+
+        #print "p1: ", p1, " p2: ", p2
+
+        ## Calculate the angle between the right vectors and the axis vector perpendicular to them
+        angle = math.acos(max(min(right1.dot(right0), 1.0), -1.0))
+        axis = right1.cross(right0)
+        axis.normalize()
+
+        ## Transform the forward vector of the child bone so that it is on the same horizontal plane as the forward vector of the parent bone
+        transformed_forward1 = AxisAngle(axis.asArray() + [angle]) * forward1
+        transformed_forward1.normalize()
+
+        ## Calculate the angle between the transformed forward vector and the forward vector of the parent bone
+        ## This is the angle of the X-axis
+        x_angle = math.acos(max(min(transformed_forward1.dot(forward0), 1.0), -1.0))
+
+        ## Calculate a vector perpendicular to the transformed forward vector and the forward vector of the parent bone
+        axis = transformed_forward1.cross(forward0)
+        axis.normalize()
+
+        ## Transform the forward vector of the child bone so that it is on the same vertical plane as the forward vector of the parent bone
+        ## and to transform the up vector of the child bone to be used in a later calculation
+        axis_ang = AxisAngle(axis.asArray() + [x_angle])
+        transformed_forward1 = axis_ang * forward1
+        transformed_forward1.normalize()
+        transformed_up1 = axis_ang * up1
+        transformed_up1.normalize()
+
+        ## Set the sign of y_angle using the axis calculated and the right vector of the parent bone
+        x_angle = math.copysign(x_angle, axis.dot(right0))
+
+        ## Calculate the angle between the transformed forward vector and the forward vector of the parent bone
+        ## This is the angle of the Y-axis
+        y_angle = math.acos(max(min(transformed_forward1.dot(forward0), 1.0), -1.0))
+
+        ## Calculate a vector perpendicular to the transformed forward vector and the forward vector of the parent bone
+        axis = transformed_forward1.cross(forward0)
+        axis.normalize()
+
+        ## Transform the transformed up vector so that it is on the same vertical plane as the up vector of the parent bone
+        transformed_up1 = AxisAngle(axis.asArray() + [x_angle]) * transformed_up1
+        transformed_up1.normalize()
+
+        ## Set the sign of x_angle using the axis calculated and the up vector of the parent bone
+        y_angle = math.copysign(y_angle, axis.dot(up0))
+
+        ## Calculate the angle between the transformed up vector and the up vector of the parent bone
+        ## This is the angle of the Z-axis
+        z_angle = math.acos(max(min(transformed_up1.dot(up0), 1.0), -1.0))
+        axis = transformed_up1.cross(up0)
+        axis.normalize()
+
+        ## Set the sign of z_angle using the axis calculated and the forward vector of the parent bone
+        z_angle = math.copysign(z_angle, axis.dot(forward0))
+
+#======================================================================
+        ## print " ## " ,math.degrees(x_angle)," $$ ", math.degrees(y_angle)," ?? ", math.degrees(z_angle)
+
+        return (math.degrees(x_angle), math.degrees(y_angle), math.degrees(z_angle))
 
 def calculateJointVaule(par_bone, child_bone, joint):
-    orient0 = par_bone.vs_node.input_ports[0].data
+    orient0 = par_bone.getOrientation()
+    #orient0 = par_bone.vs_node.input_ports[0].data
     timestamp0 = par_bone.vs_node.input_ports[0].timestamp
-    
-    orient1 = child_bone.vs_node.input_ports[0].data
+
+    orient1 = child_bone.getOrientation()
+    #orient1 = child_bone.vs_node.input_ports[0].data
     timestamp1 = child_bone.vs_node.input_ports[0].timestamp
+
+    #orient0.toEuler()
+    #orient1.toEuler()
+
 
 
     if timestamp0 == -1:
@@ -2035,7 +2138,7 @@ def calculateJointVaule(par_bone, child_bone, joint):
         z_angle = math.copysign(z_angle, axis.dot(forward0))
 
 #======================================================================
-        print "**", timestamp, " ## " ,math.degrees(x_angle)," $$ ", math.degrees(y_angle)," ?? ", math.degrees(z_angle)
+        ## print "**", timestamp, " ## " ,math.degrees(x_angle)," $$ ", math.degrees(y_angle)," ?? ", math.degrees(z_angle)
 
         return (timestamp, (math.degrees(x_angle), math.degrees(y_angle), math.degrees(z_angle)))
     else:
