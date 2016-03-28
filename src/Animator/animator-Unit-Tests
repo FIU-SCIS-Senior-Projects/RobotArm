@@ -1,3 +1,5 @@
+from visual import *
+
 HEAD_PAN_RANGE = 97
 HEAD_TILT_RANGE = 53
 SHOULDER_PITCH_RANGE = 127
@@ -6,6 +8,10 @@ ARM_YAW_RANGE = 104
 ELBOW_ROLL_RANGE = 90
 FOREARM_YAW_RANGE = 180
 WRIST_ROLL_RANGE = 180
+
+vX = vector(1,0,0)
+vY = vector(0,1,0)
+vZ = vector(0,0,1)
 
 head_x_low = 360
 head_y_low = 360
@@ -34,6 +40,8 @@ servoMax = 3072
 ratio = 4096/360
 
 case = [75, 80, 90, 100, 90, 20, -1, 0, -18, -60, -65, 65, -75, 100, -90, 90, 180]
+case1 = [75, 20, -1, 0, -18, -90, 90]
+case2 = [90, -1, 0, 65, -75, 100]
 for i in case:
     r_wrist_x = i
     r_wrist_y = i
@@ -63,3 +71,31 @@ for i in case:
     print "normalized x: ", normalized_x
     print "r_wrist_x_low: ", r_wrist_x_low
     print "servoPosition: ", servoPosition
+
+    for j in case1:
+        for k in case2:
+            print "x: ", i
+            print "y: ", j
+            print "z: ", k
+
+            vShoulderX = vector(1, 0, 0)
+            vShoulderX = rotate(vShoulderX, radians(i), vX)
+            print vShoulderX
+            vShoulderX = rotate(vShoulderX, radians(j), vY)
+            print vShoulderX
+            vShoulderX = rotate(vShoulderX, radians(k), vZ)
+            print vShoulderX
+            tmpShoulderX = vector(0, vShoulderX.y, vShoulderX.z)
+            angleShoulderX = diff_angle(vY, tmpShoulderX)
+            angleShoulderY = diff_angle(vX, vShoulderX)
+
+            tmpShoulderX_Tmp = diff_angle(vZ, tmpShoulderX)
+            if angleShoulderX < 90:
+                if tmpShoulderX_Tmp > 90:
+                    angleShoulderX = -angleShoulderX
+            else:
+                if tmpShoulderX_Tmp > 90:
+                    angleShoulderX = -angleShoulderX
+
+            print "x: ", degrees(angleShoulderX)
+            print "y: ", degrees(angleShoulderY)
