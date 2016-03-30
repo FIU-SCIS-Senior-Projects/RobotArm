@@ -2,9 +2,10 @@ package discoverylab.telebot.master.arms;
 
 import static discoverylab.util.logging.LogUtils.*;
 import discoverylab.telebot.master.arms.configurations.MasterArmsConfig;
-//import discoverylab.telebot.master.arms.configurations.SensorConfig;
+import discoverylab.telebot.master.arms.configurations.SensorConfig;
 import discoverylab.telebot.master.arms.gui.TelebotMasterArmsTCPController;
-//import discoverylab.telebot.master.arms.gui.TelebotMasterArmsTCPView;
+import discoverylab.telebot.master.arms.gui.TelebotMasterArmsTCPController.DataListener;
+import discoverylab.telebot.master.arms.gui.TelebotMasterArmsTCPView;
 import discoverylab.telebot.master.arms.mapper.ServoDataMapper;
 import com.rti.dds.infrastructure.InstanceHandle_t;
 import TelebotDDSCore.Source.Java.Generated.master.arms.TMasterToArms;
@@ -27,18 +28,32 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 	private int[] jointPositions;
 	
 	private TMasterToArmsDataWriter writer;
-	//private TelebotMasterArmsTCPView view;
-	private TelebotMasterArmsTCPController controller;
+	private TelebotMasterArmsTCPView view;
+	private DataListener listener;
 	
 	TMasterToArms instance = new TMasterToArms();
 	InstanceHandle_t instance_handle = InstanceHandle_t.HANDLE_NIL;
 	
-	public TelebotMasterArmsTCPComponent(int portNumber, TelebotMasterArmsTCPController controller) 
+	public TelebotMasterArmsTCPComponent(DataListener listener, int portNumber) 
 	{
 		super(portNumber);
 		parser = new YEIDataParser();
 		mapper = new ServoDataMapper();
-		this.controller = controller;
+		this.listener = listener;
+		
+		jointPositions = new int[14];
+		
+		for(int i = 0; i < jointPositions.length; i++)
+		{
+			jointPositions[i] = -1;
+		}
+	}
+	
+	public TelebotMasterArmsTCPComponent(int portNumber) 
+	{
+		super(portNumber);
+		parser = new YEIDataParser();
+		mapper = new ServoDataMapper();
 		
 		jointPositions = new int[14];
 		
@@ -78,19 +93,21 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		
 		if(jointType.equals("head"))
 		{
-			servoOnePosition = mapper.process(
+			servoOnePosition = mapper.processHead(
 					x, 
 					MasterArmsConfig.SERVO_SENSOR_RATIO, 
 					MasterArmsConfig.HEAD_PITCH_MAX, 
 					MasterArmsConfig.HEAD_PITCH_MIN,
+					MasterArmsConfig.HEAD_PITCH_REST,
 					true
 					);
 			
-			servoTwoPosition = mapper.process(
+			servoTwoPosition = mapper.processHead(
 					y, 
 					MasterArmsConfig.SERVO_SENSOR_RATIO,
 					MasterArmsConfig.HEAD_YAW_MAX, 
 					MasterArmsConfig.HEAD_YAW_MIN,
+					MasterArmsConfig.HEAD_YAW_REST,
 					false
 					);
 			
@@ -342,7 +359,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		z = yeiDataInstance.getZ();
 		yeiDataInstance = null;
 		
-		controller.changeText(jointType, x, y, z);
+		listener.changeText(jointType, x, y, z);
 		generatePositions(jointType, x, y, z);
 	}
 

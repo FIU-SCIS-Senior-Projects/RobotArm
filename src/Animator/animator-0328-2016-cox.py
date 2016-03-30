@@ -2229,10 +2229,9 @@ class AngleCalculatorTCP(wx.Dialog):
     head_x_low = 360
     head_x_high = -360
     head_x_offset = 0
-    head_y_low = 360
-    head_y_high = -360
-    head_y_offset = 0
     head_z_low = 360
+    head_z_high = -360
+    head_z_offset = 0
     r_shoulder_x_low = 360
     r_shoulder_y_low = 360
     r_shoulder_z_low = 360
@@ -2784,24 +2783,24 @@ class AngleCalculatorTCP(wx.Dialog):
                 neck_x, neck_y, neck_z = joint_vaule
 
                 #head yaw
-                if neck_y < self.head_y_low:
-                    self.head_y_low = neck_y
-                    head_y_offset = (self.head_y_low + self.head_y_high) / 2
-                if neck_y > self.head_y_high:
-                    self.head_y_high = neck_y
-                    head_y_offset = (self.head_y_low + self.head_y_high) / 2
-                if (self.head_y_high - self.head_y_low) > (HEAD_PAN_RANGE * 1.5):
-                    self.head_y_low = self.head_y_offset - (HEAD_PAN_RANGE / 2)
-                    self.head_y_high = self.head_y_offset + (HEAD_PAN_RANGE / 2)
-                normalized_y = neck_y - self.head_y_offset
+                if neck_z < self.head_z_low:
+                    self.head_z_low = neck_z
+                    self.head_z_offset = (self.head_z_low + self.head_z_high) / 2
+                if neck_z > self.head_z_high:
+                    self.head_z_high = neck_z
+                    self.head_z_offset = (self.head_z_low + self.head_z_high) / 2
+                if (self.head_z_high - self.head_z_low) > (HEAD_PAN_RANGE * 1.5):
+                    self.head_z_low = self.head_z_offset - (HEAD_PAN_RANGE / 2)
+                    self.head_z_high = self.head_z_offset + (HEAD_PAN_RANGE / 2)
+                normalized_z = neck_z - self.head_z_offset
 
                 #head pitch
                 if neck_x < self.head_x_low:
                     self.head_x_low = neck_x
-                    head_x_offset = (self.head_x_low + self.head_x_high) / 3
+                    self.head_x_offset = (self.head_x_low + self.head_x_high) / 3
                 if neck_x > self.head_x_high:
                     self.head_x_high = neck_x
-                    head_x_offset = (self.head_x_low + self.head_x_high) / 3
+                    self.head_x_offset = (self.head_x_low + self.head_x_high) / 3
                 if (self.head_x_high - self.head_x_low) > (HEAD_TILT_RANGE * 1.5):
                     self.head_x_low = self.head_x_offset - (HEAD_TILT_RANGE / 3)
                     self.head_x_high = self.head_x_offset + ((2 * HEAD_TILT_RANGE) / 3)
@@ -2809,10 +2808,10 @@ class AngleCalculatorTCP(wx.Dialog):
 
                 output = self.gbs.FindItemAtPosition((2, 3)).GetWindow()
 
-                tmp_str = 'HD: {:0.1f} {:0.1f} {:0.1f}'.format(normalized_x, normalized_y, 0)
+                tmp_str = 'HD: {:0.1f} {:0.1f} {:0.1f}'.format(normalized_x, 0, normalized_z)
                 if self.connectFlag is True:
                     try:
-                        msg_str = '<head {:d} {:d} {:d}>\n'.format((int)(normalized_x), (int)(normalized_y *2), 0)
+                        msg_str = '<head {:d} {:d} {:d}>\n'.format(int(normalized_x), 0, int(normalized_z * 2))
                         if self.TeleBotHead.IsChecked():
                             self.s.send(msg_str)
                         else:
