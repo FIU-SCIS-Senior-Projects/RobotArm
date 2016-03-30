@@ -1970,20 +1970,22 @@ def copyBone(bone, selected_list, name_list, parent=None):
         #4 - head
 #it uses the orientation parameter of the Bone
 def calculateJointAngles(par_bone, child_bone, joint):
+    orient_par = par_bone.vs_node.input_ports[0].data
+    orient_child = child_bone.vs_node.input_ports[0].data
 
-    orientParEul = par_bone.getOrientation().toEuler()
-        #par_bone.vs_node.input_ports[0].data.toEuler()
-    orientChildEul = child_bone.getOrientation().toEuler()
-        #child_bone.vs_node.input_ports[0].data.toEuler()
+    if joint == 1:
 
-    #print "Parent data: ", orientPar, "Parent Euler: ", orientParEul
-    #print "Child data: ", orientChild, " Child Euler: ", orientChildEul
-
-
-    if joint < 5:
-        angles = orientChildEul - orientParEul
+        invert_orient_par = -orient_par
+        orient_relative = orient_child * invert_orient_par
+        angles = orient_relative.toEuler()
         return math.degrees(angles[0]), math.degrees(angles[1]), math.degrees(angles[2])
 
+    elif joint == 4:
+        invert_orient_par = -orient_par
+        orient_relative = invert_orient_par * invert_orient_par
+        angles = orient_relative.toEulerFullCircle()
+        print "x: ", math.degrees(angles[0]), " y: ", math.degrees(angles[1]), " z: ", math.degrees(angles[2])
+        return math.degrees(angles[0]), math.degrees(angles[1]), math.degrees(angles[2])
 
 
 def calculateJointVaule(par_bone, child_bone, joint):

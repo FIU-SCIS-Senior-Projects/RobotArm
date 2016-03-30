@@ -99,7 +99,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					MasterArmsConfig.HEAD_PITCH_MAX, 
 					MasterArmsConfig.HEAD_PITCH_MIN,
 					MasterArmsConfig.HEAD_PITCH_REST,
-					true
+					false
 					);
 			
 			servoTwoPosition = mapper.processHead(
@@ -108,7 +108,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					MasterArmsConfig.HEAD_YAW_MAX, 
 					MasterArmsConfig.HEAD_YAW_MIN,
 					MasterArmsConfig.HEAD_YAW_REST,
-					false
+					true
 					);
 			
 			if(servoOnePosition != jointPositions[0])
