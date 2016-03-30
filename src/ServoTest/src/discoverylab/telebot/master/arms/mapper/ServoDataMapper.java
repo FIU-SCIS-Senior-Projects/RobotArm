@@ -36,4 +36,19 @@ public class ServoDataMapper //extends Mapper
 		return position;
 	}
 	
+	//processHead is used to map MocapStudio angle values to TeleBot servo values for the 
+	//servos in TeleBot's neck. The angles are set as rotation amount from the rest position
+	//of looking straight forward
+	public int processHead(int sensorAngle, double servoSensorRatio, int servoMax, int servoMin, int servoRest, boolean invert)
+	{
+		int mapped = 0;
+		if(invert == true)
+			mapped = (int)(servoRest - (sensorAngle*servoSensorRatio));
+		else
+			mapped = (int)(servoRest + (sensorAngle*servoSensorRatio)); 
+		
+		int position = constrain(mapped, servoMax, servoMin);
+		
+		return position;
+	}
 }

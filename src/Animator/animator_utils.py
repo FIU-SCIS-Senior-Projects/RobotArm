@@ -1770,15 +1770,17 @@ class Bone(SkelNode):
             data = self.vs_node.input_ports[0].data
             data_type = self.vs_node.input_ports[0].data_type
             if data is not None:
+                #print "Bone Name: ", self.name, "data: ", data
                 if data_type != 'Q':
                     data = data.toQuaternion()
                 
                 tared_orient = data.copy()
                 
                 self.orientation = tared_orient.toMatrix4()
-#==========================================================================                
-#                print "1[",data,"]{",tared_orient,"}(",self.orientation,")"
-#                print data," = ",tared_orient," $ ",self.orientation
+#==========================================================================
+                #print "Bone.update name: ", self.name
+                #print "1[",data,"]{",tared_orient,"}(",self.orientation,")"
+                #print data," = ",tared_orient," $ ",self.orientation
             else:
                 # print 'No orientation!'
                 pass
@@ -1958,13 +1960,46 @@ def copyBone(bone, selected_list, name_list, parent=None):
             tmp_list += copyBone(child, selected_list, name_list, copy)
     return tmp_list
 
+#calculateJointAngles is passed three parameters:
+    #par_bone - the Bone object closest to the spine
+    #child_bone - the Bone object farthest from the spine
+    #joint - an int representing the type of joint
+        #1 - wrist
+        #2 - elbow
+        #3 - shoulder
+        #4 - head
+#it uses the orientation parameter of the Bone
+def calculateJointAngles(par_bone, child_bone, joint):
+    orient_par = par_bone.vs_node.input_ports[0].data
+    orient_child = child_bone.vs_node.input_ports[0].data
+
+    if joint == 1:
+
+        invert_orient_par = -orient_par
+        orient_relative = orient_child * invert_orient_par
+        angles = orient_relative.toEuler()
+        return math.degrees(angles[0]), math.degrees(angles[1]), math.degrees(angles[2])
+
+    elif joint == 4:
+        invert_orient_par = -orient_par
+        orient_relative = invert_orient_par * invert_orient_par
+        angles = orient_relative.toEulerFullCircle()
+        print "x: ", math.degrees(angles[0]), " y: ", math.degrees(angles[1]), " z: ", math.degrees(angles[2])
+        return math.degrees(angles[0]), math.degrees(angles[1]), math.degrees(angles[2])
+
 
 def calculateJointVaule(par_bone, child_bone, joint):
-    orient0 = par_bone.vs_node.input_ports[0].data
+    orient0 = par_bone.getOrientation()
+    #orient0 = par_bone.vs_node.input_ports[0].data
     timestamp0 = par_bone.vs_node.input_ports[0].timestamp
-    
-    orient1 = child_bone.vs_node.input_ports[0].data
+
+    orient1 = child_bone.getOrientation()
+    #orient1 = child_bone.vs_node.input_ports[0].data
     timestamp1 = child_bone.vs_node.input_ports[0].timestamp
+
+    #orient0.toEuler()
+    #orient1.toEuler()
+
 
 
     if timestamp0 == -1:
@@ -2035,7 +2070,7 @@ def calculateJointVaule(par_bone, child_bone, joint):
         z_angle = math.copysign(z_angle, axis.dot(forward0))
 
 #======================================================================
-        print "**", timestamp, " ## " ,math.degrees(x_angle)," $$ ", math.degrees(y_angle)," ?? ", math.degrees(z_angle)
+        ## print "**", timestamp, " ## " ,math.degrees(x_angle)," $$ ", math.degrees(y_angle)," ?? ", math.degrees(z_angle)
 
         return (timestamp, (math.degrees(x_angle), math.degrees(y_angle), math.degrees(z_angle)))
     else:
