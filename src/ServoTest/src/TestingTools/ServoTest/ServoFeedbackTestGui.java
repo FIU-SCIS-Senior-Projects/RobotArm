@@ -10,6 +10,7 @@ import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.awt.Color;
@@ -21,14 +22,14 @@ public class ServoFeedbackTestGui extends JFrame
 	
 	private static final long serialVersionUID = 1L;
 	private ServoControl controller;
-	private HashMap<Integer, JLabel> valueLabels;
+	private HashMap<Integer, JTextField> valueLabels;
 	
 	// ServoTestGui creates and displays the UI 
 	// for the Servo Test App
 	public ServoFeedbackTestGui() {
 		controller = ServoControl.getSingleton();
 		controller.setGui(this);
-		valueLabels = new HashMap<Integer, JLabel>();
+		valueLabels = new HashMap<Integer, JTextField>();
 		
 		 Font labelFont = new Font("Calibri", Font.BOLD, 16);
 		 Font valueFont = new Font("Calibri", Font.BOLD, 16);
@@ -39,7 +40,7 @@ public class ServoFeedbackTestGui extends JFrame
 		 layout.setAutoCreateGaps(true);
 		 layout.setAutoCreateContainerGaps(true);
 		 		 
-		 JButton s10Button0, s10Button1, 
+		 JButton s10Button0, s10Button1, s10Button2,
 		 	s11Button0, s11Button1, s11Button2,
 		 	s20Button0, s20Button1,
 		 	s21Button0, s21Button1,
@@ -60,7 +61,7 @@ public class ServoFeedbackTestGui extends JFrame
 			s30Label, s31Label, s32Label, s33Label, 
 			s34Label, s35Label;
 
-		 JLabel s10Value, s11Value,
+		 JTextField s10Value, s11Value,
 			s20Value, s21Value, s22Value, s23Value, 
 			s24Value, s25Value,
 			s30Value, s31Value, s32Value, s33Value, 
@@ -79,23 +80,28 @@ public class ServoFeedbackTestGui extends JFrame
 		 //Servo 10 - Head Pitch
 		 s10Label = new JLabel("Servo 10 - Head Pitch");
 		 s10Label.setFont(labelFont);
-		 s10Value = new JLabel("---- - ----");
+		 s10Value = new JTextField("---- - ----");
 		 s10Value.setFont(valueFont);
 		 s10Button0 = new JButton("Head Looking Down");
 		 s10Button0.setFont(buttonFont);
 		 s10Button0.setHorizontalTextPosition(AbstractButton.CENTER);
 		 s10Button0.setActionCommand("10Min");
 		 s10Button0.addActionListener(this);
-		 s10Button1 = new JButton("Head Looking Up");
+		 s10Button1 = new JButton("Head Looking Forward");
 		 s10Button1.setFont(buttonFont);
 		 s10Button1.setHorizontalTextPosition(AbstractButton.CENTER);
-		 s10Button1.setActionCommand("10Max");
+		 s10Button1.setActionCommand("10Rest");
 		 s10Button1.addActionListener(this);
+		 s10Button2 = new JButton("Head Looking Up");
+		 s10Button2.setFont(buttonFont);
+		 s10Button2.setHorizontalTextPosition(AbstractButton.CENTER);
+		 s10Button2.setActionCommand("10Max");
+		 s10Button2.addActionListener(this);
 		 
 		 //Servo 11 - Head Yaw
 		 s11Label = new JLabel("Servo 11 - Head Yaw");
 		 s11Label.setFont(labelFont);
-		 s11Value = new JLabel("---- - ----");
+		 s11Value = new JTextField("---- - ----");
 		 s11Value.setFont(valueFont);
 		 s11Button0 = new JButton("Head Looking Right");
 		 s11Button0.setFont(buttonFont);
@@ -117,7 +123,7 @@ public class ServoFeedbackTestGui extends JFrame
 		 //Servo 20 - Left Shoulder Pitch
 		 s20Label = new JLabel("Servo 20 - Left Shoulder Pitch");
 		 s20Label.setFont(labelFont);
-		 s20Value = new JLabel("---- - ----");
+		 s20Value = new JTextField("---- - ----");
 		 s20Value.setFont(valueFont);
 		 s20Button0 = new JButton("Left Arm At Side - Rest");
 		 s20Button0.setFont(buttonFont);
@@ -133,7 +139,7 @@ public class ServoFeedbackTestGui extends JFrame
 		 //Servo 21 - Left Shoulder Roll
 		 s21Label = new JLabel("Servo 21 - Left Shoulder Roll");
 		 s21Label.setFont(labelFont);
-		 s21Value = new JLabel("---- - ----");
+		 s21Value = new JTextField("---- - ----");
 		 s21Value.setFont(valueFont);
 		 s21Button0 = new JButton("Left Arm At Side - Rest");
 		 s21Button0.setFont(buttonFont);
@@ -149,7 +155,7 @@ public class ServoFeedbackTestGui extends JFrame
 		 //Servo 22 - Left Arm Yaw
 		 s22Label = new JLabel("Servo 22 - Left Arm Yaw");
 		 s22Label.setFont(labelFont);
-		 s22Value = new JLabel("---- - ----");
+		 s22Value = new JTextField("---- - ----");
 		 s22Value.setFont(valueFont);
 		 s22Button0 = new JButton("Left Elbow Pointing Out");
 		 s22Button0.setFont(buttonFont);
@@ -170,7 +176,7 @@ public class ServoFeedbackTestGui extends JFrame
 		 //Servo 23 - Left Elbow Roll
 		 s23Label = new JLabel("Servo 23 - Left Elbow Roll");
 		 s23Label.setFont(labelFont);
-		 s23Value = new JLabel("---- - ----");
+		 s23Value = new JTextField("---- - ----");
 		 s23Value.setFont(valueFont);
 		 s23Button0 = new JButton("Left Elbow Straight - Rest");
 		 s23Button0.setFont(buttonFont);
@@ -186,7 +192,7 @@ public class ServoFeedbackTestGui extends JFrame
 		 //Servo 24 - Lfet Forearm Yaw
 		 s24Label = new JLabel("Servo 24 - Left Forearm Yaw");
 		 s24Label.setFont(labelFont);
-		 s24Value = new JLabel("---- - ----");
+		 s24Value = new JTextField("---- - ----");
 		 s24Value.setFont(valueFont);
 		 s24Button0 = new JButton("Left Wrist In Line With Elbow");
 		 s24Button0.setFont(buttonFont);
@@ -207,7 +213,7 @@ public class ServoFeedbackTestGui extends JFrame
 		 //Servo 25 - Left Wrist Roll
 		 s25Label = new JLabel("Servo 25 - Left Wrist Roll");
 		 s25Label.setFont(labelFont);
-		 s25Value = new JLabel("---- - ----");
+		 s25Value = new JTextField("---- - ----");
 		 s25Value.setFont(valueFont);
 		 s25Button0 = new JButton("Left Wrist Back");
 		 s25Button0.setFont(buttonFont);
@@ -229,7 +235,7 @@ public class ServoFeedbackTestGui extends JFrame
 		 //Servo 30 - Right Shoulder Pitch
 		 s30Label = new JLabel("Servo 30 - Right Shoulder Pitch");
 		 s30Label.setFont(labelFont);
-		 s30Value = new JLabel("---- - ----");
+		 s30Value = new JTextField("---- - ----");
 		 s30Value.setFont(valueFont);
 		 s30Button0 = new JButton("Right Arm At Side - Rest");
 		 s30Button0.setFont(buttonFont);
@@ -245,7 +251,7 @@ public class ServoFeedbackTestGui extends JFrame
 		 //Servo 31 - Right Shoulder Roll
 		 s31Label = new JLabel("Servo 31 - Right Shoulder Roll");
 		 s31Label.setFont(labelFont);
-		 s31Value = new JLabel("---- - ----");
+		 s31Value = new JTextField("---- - ----");
 		 s31Value.setFont(valueFont);
 		 s31Button0 = new JButton("Right Arm At Side - Rest");
 		 s31Button0.setFont(buttonFont);
@@ -261,7 +267,7 @@ public class ServoFeedbackTestGui extends JFrame
 		 //Servo 32 - Right Arm Yaw
 		 s32Label = new JLabel("Servo 32 - Right Arm Yaw");
 		 s32Label.setFont(labelFont);
-		 s32Value = new JLabel("---- - ----");
+		 s32Value = new JTextField("---- - ----");
 		 s32Value.setFont(valueFont);
 		 s32Button0 = new JButton("Elbow Pointing In");
 		 s32Button0.setFont(buttonFont);
@@ -282,7 +288,7 @@ public class ServoFeedbackTestGui extends JFrame
 		 //Servo 33 - Right Elbow Roll
 		 s33Label = new JLabel("Servo 33 - Right Elbow Roll");
 		 s33Label.setFont(labelFont);
-		 s33Value = new JLabel("---- - ----");
+		 s33Value = new JTextField("---- - ----");
 		 s33Value.setFont(valueFont);
 		 s33Button0 = new JButton("Right Elbow Straight - Rest");
 		 s33Button0.setFont(buttonFont);
@@ -298,7 +304,7 @@ public class ServoFeedbackTestGui extends JFrame
 		 //Servo 34 - Right Forearm Yaw
 		 s34Label = new JLabel("Servo 34 - Right Forearm Yaw");
 		 s34Label.setFont(labelFont);
-		 s34Value = new JLabel("---- - ----");
+		 s34Value = new JTextField("---- - ----");
 		 s34Value.setFont(valueFont);
 		 s34Button0 = new JButton("Right Wrist In Line With Elbow");
 		 s34Button0.setFont(buttonFont);
@@ -319,7 +325,7 @@ public class ServoFeedbackTestGui extends JFrame
 		 //Servo 35 - Right Wrist Roll
 		 s35Label = new JLabel("Servo 35 - Right Wrist Roll");
 		 s35Label.setFont(labelFont);
-		 s35Value = new JLabel("---- - ----");
+		 s35Value = new JTextField("---- - ----");
 		 s35Value.setFont(valueFont);
 		 s35Button0 = new JButton("Right Wrist Back");
 		 s35Button0.setFont(buttonFont);
@@ -403,6 +409,7 @@ public class ServoFeedbackTestGui extends JFrame
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
 						.addComponent(c2Title)
 						.addComponent(s10Value)
+						.addComponent(s10Button2)
 						.addComponent(s11Value)
 						.addComponent(s11Button2)
 						.addComponent(s20Value)
@@ -435,7 +442,8 @@ public class ServoFeedbackTestGui extends JFrame
 						 .addComponent(s10Value))
 				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
 						 .addComponent(s10Button0)
-						 .addComponent(s10Button1))
+						 .addComponent(s10Button1)
+						 .addComponent(s10Button2))
 				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
 						 .addComponent(s11Label)
 						 .addComponent(s11Value))
@@ -523,7 +531,7 @@ public class ServoFeedbackTestGui extends JFrame
 						 .addComponent(s35Button2))
 			   );    
 		 
-		 setTitle("Telebot Arm Servo Feedback Tester");
+		 setTitle("Telebot Arm/Head Servo Tester With Feedback");
 		 pack();
 		 setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	}
@@ -567,7 +575,7 @@ public class ServoFeedbackTestGui extends JFrame
 	//be set to black
 	public void refreshView(int servoID, int requestedPosition, int currentPosition)
 	{
-		JLabel label = valueLabels.get(servoID);
+		JTextField label = valueLabels.get(servoID);
 		label.setText(String.format("%d - %d", requestedPosition, currentPosition));
 		if(Math.abs(requestedPosition - currentPosition) > 50)
 		{
