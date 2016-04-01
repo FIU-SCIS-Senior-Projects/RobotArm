@@ -11,8 +11,6 @@ import jssc.SerialPort;
 import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
-import java.awt.event.ActionEvent;
-
 
 public class ServoControl implements SerialPortEventListener {
 	
@@ -308,8 +306,6 @@ public class ServoControl implements SerialPortEventListener {
 			currentValue = feedBack.getFeedback(servoID);
 			requestedValue = servoModel.getPosition(servoID); 
 			gui.refreshView(servoID, requestedValue, currentValue);
-            ActionEvent e = new ActionEvent(gui, 2345, "00 Paint");
-			gui.actionPerformed(e);
 		}
 	}
 	
@@ -332,12 +328,15 @@ public class ServoControl implements SerialPortEventListener {
 	{
 		return servoModel.getMin(servoID);
 	}
+	
+	public void onTimerUpdate()
+	{
+		this.refreshFeedback();
+	}
 
 	@Override
 	public void serialEvent(SerialPortEvent arg0) {
 		feedBack.readSerialData();
-		if(gui != null)
-			refreshFeedback();
 	}
 	
 }
