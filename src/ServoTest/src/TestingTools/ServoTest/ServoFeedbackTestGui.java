@@ -10,6 +10,8 @@ import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.Timer;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.awt.Color;
@@ -22,6 +24,7 @@ public class ServoFeedbackTestGui extends JFrame
 	private static final long serialVersionUID = 1L;
 	private ServoControl controller;
 	private HashMap<Integer, JLabel> valueLabels;
+	private Timer timer;
 	
 	// ServoTestGui creates and displays the UI 
 	// for the Servo Test App
@@ -39,7 +42,7 @@ public class ServoFeedbackTestGui extends JFrame
 		 layout.setAutoCreateGaps(true);
 		 layout.setAutoCreateContainerGaps(true);
 		 		 
-		 JButton s10Button0, s10Button1, 
+		 JButton s10Button0, s10Button1, s10Button2,
 		 	s11Button0, s11Button1, s11Button2,
 		 	s20Button0, s20Button1,
 		 	s21Button0, s21Button1,
@@ -86,11 +89,16 @@ public class ServoFeedbackTestGui extends JFrame
 		 s10Button0.setHorizontalTextPosition(AbstractButton.CENTER);
 		 s10Button0.setActionCommand("10Min");
 		 s10Button0.addActionListener(this);
-		 s10Button1 = new JButton("Head Looking Up");
+		 s10Button1 = new JButton("Head Looking Forward");
 		 s10Button1.setFont(buttonFont);
 		 s10Button1.setHorizontalTextPosition(AbstractButton.CENTER);
-		 s10Button1.setActionCommand("10Max");
+		 s10Button1.setActionCommand("10Rest");
 		 s10Button1.addActionListener(this);
+		 s10Button2 = new JButton("Head Looking Up");
+		 s10Button2.setFont(buttonFont);
+		 s10Button2.setHorizontalTextPosition(AbstractButton.CENTER);
+		 s10Button2.setActionCommand("10Max");
+		 s10Button2.addActionListener(this);
 		 
 		 //Servo 11 - Head Yaw
 		 s11Label = new JLabel("Servo 11 - Head Yaw");
@@ -403,6 +411,7 @@ public class ServoFeedbackTestGui extends JFrame
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
 						.addComponent(c2Title)
 						.addComponent(s10Value)
+						.addComponent(s10Button2)
 						.addComponent(s11Value)
 						.addComponent(s11Button2)
 						.addComponent(s20Value)
@@ -435,7 +444,8 @@ public class ServoFeedbackTestGui extends JFrame
 						 .addComponent(s10Value))
 				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
 						 .addComponent(s10Button0)
-						 .addComponent(s10Button1))
+						 .addComponent(s10Button1)
+						 .addComponent(s10Button2))
 				 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
 						 .addComponent(s11Label)
 						 .addComponent(s11Value))
@@ -523,9 +533,12 @@ public class ServoFeedbackTestGui extends JFrame
 						 .addComponent(s35Button2))
 			   );    
 		 
-		 setTitle("Telebot Arm Servo Feedback Tester");
+		 setTitle("Telebot Arm/Head Servo Tester With Feedback");
 		 pack();
 		 setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		 timer = new Timer(300, this);
+		 timer.setInitialDelay(300);
+		 timer.start();
 	}
 	
 	//actionPerformed will examine the ActionCommand
@@ -533,7 +546,11 @@ public class ServoFeedbackTestGui extends JFrame
 	//the controller
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
-		 
+		if (command == null)
+		{
+			controller.onTimerUpdate();
+			return;
+		}
 		int servoID = Integer.parseInt(command.substring(0, 2));
 		int value = 2048;
 		if(command.substring(2, 5).equals("Max"))
@@ -551,13 +568,6 @@ public class ServoFeedbackTestGui extends JFrame
 			value = controller.getRest(servoID);
 			controller.newValue(value, servoID);
 		}
-		else
-		{
-			repaint();
-			//value = Integer.parseInt(command.substring(3, 7));
-			//int current = Integer.parseInt(command.substring(8, 12));
-			//refreshView(servoID, value, current);
-		}
 	}
 	
 	//refreshView updates the value labels with the current
@@ -568,7 +578,7 @@ public class ServoFeedbackTestGui extends JFrame
 	public void refreshView(int servoID, int requestedPosition, int currentPosition)
 	{
 		JLabel label = valueLabels.get(servoID);
-		label.setText(String.format("%d - %d", requestedPosition, currentPosition));
+		
 		if(Math.abs(requestedPosition - currentPosition) > 50)
 		{
 			label.setForeground(Color.RED);
@@ -577,6 +587,7 @@ public class ServoFeedbackTestGui extends JFrame
 		{
 			label.setForeground(Color.BLACK);
 		}
+		label.setText(String.format("%d - %d", requestedPosition, currentPosition));
 	}
 	 	
 	public static void main(String args[]) {
