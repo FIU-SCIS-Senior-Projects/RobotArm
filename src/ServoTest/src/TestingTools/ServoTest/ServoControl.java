@@ -38,7 +38,7 @@ public class ServoControl implements SerialPortEventListener {
 		feedBack = ServoFeedback.getSingleton();
 		
 		//Serial Port init
-		serialPortName = "Com8"; //"/dev/TelebotArms";
+		serialPortName = "/dev/TelebotArms";
 		baudRate = 57600;
 		dataBits = SerialPort.DATABITS_8;
 		stopBits = SerialPort.STOPBITS_1;
