@@ -10,7 +10,6 @@ import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
 import javax.swing.Timer;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
