@@ -14,4 +14,10 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<variableList>
+		<variable>
+			<name>DISCOVERY_GIT</name>
+			<value>file:/C:/Users/Curtis/Documents/GitHub/TelebotMasterArmsTCP/src</value>
+		</variable>
+	</variableList>
 </projectDescription>
