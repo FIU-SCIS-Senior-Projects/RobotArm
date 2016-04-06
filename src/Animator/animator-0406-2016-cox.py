@@ -2576,6 +2576,8 @@ class AngleCalculatorTCP(wx.Dialog):
                     normalized_y = SHOULDER_PITCH_RANGE
                     self.r_shoulder_y_low = r_shoulder_y - SHOULDER_PITCH_RANGE
 
+                output = self.gbs.FindItemAtPosition((15, 3)).GetWindow()
+
                 tmp_str = 'RS: {:0.1f} {:0.1f} {:0.1f} '.format(normalized_x, normalized_y, r_shoulder_z)
                 if self.connectFlag is True:
                     try:
@@ -2712,6 +2714,8 @@ class AngleCalculatorTCP(wx.Dialog):
                 if normalized_y > SHOULDER_PITCH_RANGE:
                     normalized_y = SHOULDER_PITCH_RANGE
                     self.l_shoulder_y_low = l_shoulder_y - SHOULDER_PITCH_RANGE
+
+                output = self.gbs.FindItemAtPosition((7, 3)).GetWindow()
 
                 tmp_str = 'LS: {:0.1f} {:0.1f} {:0.1f} '.format(normalized_x, normalized_y, l_shoulder_z)
                 if self.connectFlag is True:
