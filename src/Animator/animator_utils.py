@@ -1981,17 +1981,36 @@ def calculateJointAngles(par_bone, child_bone, joint):
     that actuate the joint while preventing rotation on the
     third axis.
     """
+    """
     orient_par = par_bone.vs_node.input_ports[0].data
     orient_child = child_bone.vs_node.input_ports[0].data
+    forward_par = orient_par * Vector3(UNIT_Z)
+    right_par = orient_par * Vector3(UNIT_X)
+    up_par = orient_par * Vector3(UNIT_Y)
+    forward_child = orient_child * Vector3(UNIT_Z)
+    right_child = orient_child * Vector3(UNIT_X)
+    up_child = orient_child * Vector3(UNIT_Y)
+    crossupforard = up_par.cross(forward_par)
+    uprig = up_par.cross(right_par)
+"""
+    orient_par = par_bone.vs_node.input_ports[0].data
+    orient_par.normalize()
+    orient_child = child_bone.vs_node.input_ports[0].data
+    orient_child.normalize()
     # Find the quaternion representing the amount that the child is rotated
-    # relative to the parent by multiplying the inverse of the parent's
-    # orientation by the orientation of the child
-    invert_orient_par = -orient_par
-    orient_relative = invert_orient_par * orient_child
+    # relative to the parent by multiplying the inverse of the child's
+    # orientation by the orientation of the parent
+    inverse_orient_child = -orient_child
+    orient_relative = inverse_orient_child * orient_par
     orient_relative.normalize()
 
     if joint == 1:
         angles = orient_relative.toEulerTwo("xzx")
+        # angles_child = orient_child.toEulerTwo("XZX")
+        # angles_par = orient_par.toEulerTwo("xzx")
+        # angles_rel = angles_par - angles_child
+        # print "x: ", math.degrees(angles.x), " y: ", math.degrees(angles.y), " z: ", math.degrees(angles.z)
+        # print "REL x: ", math.degrees(angles_rel.x), " y: ", math.degrees(angles_rel.y), " z: ", math.degrees(angles_rel.z)
         return math.degrees(angles.x), math.degrees(angles.y), math.degrees(angles.z)
 
     elif joint == 2:

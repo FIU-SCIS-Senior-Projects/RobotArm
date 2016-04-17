@@ -2791,7 +2791,7 @@ class AngleCalculatorTCP(wx.Dialog):
                     print "Head error"
                 pass
 
-        time.sleep(0.007)
+        #time.sleep(0.007)
     
     def outputUpdate(self, joint, angle_type, preview=True):
         child_name, parent_name = joint.split('->')

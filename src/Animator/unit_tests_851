@@ -1,0 +1,123 @@
+#!/usr/bin/env python2.7
+
+"""- TeleBot Motion Controller - March 2016"""
+"""- This controller was developed from YEI-3Space_Mocap_Studio -"""
+
+#"""Creates the Mocap Studio."""
+
+__version__ = "0.0.1.1"
+
+__authors__ = [
+
+    '"Jong-Hoon Kim" <kimj@cis.fiu.edu>',
+    '"Shadeh Ferris-Francis" <sferr047@fiu.edu>',
+    '"Curtis Cox" <ccox016@fiu.edu>',
+    '"Chris George" <cgeorge@yeitechnology.com>',
+    '"Dan Morrison" <dmorrison@yeitechnology.com>',
+]
+
+import os
+import sys
+import animator_utils as anim_utils
+from math_lib import *
+
+
+
+
+child = anim_utils.Bone("Head")
+parent = anim_utils.Bone("Neck")
+par_orientation = Quaternion().toMatrix4()
+#par_orientation.toMatrix4()
+parent.setOrientation(par_orientation)
+ninty = math.radians(90)
+x_ninty = Euler([ninty, 0, 0])
+x_ninty = x_ninty.toMatrix4()
+y_ninty = Euler([0, ninty, 0])
+y_ninty.toMatrix4()
+z_ninty = Euler([0, 0, ninty])
+z_ninty.toMatrix4()
+xy_ninty = Euler([ninty, ninty, 0])
+xy_ninty.toMatrix4()
+xz_ninty = Euler([ninty, 0, ninty])
+xz_ninty.toMatrix4()
+yz_ninty = Euler([0, ninty, ninty])
+yz_ninty.toMatrix4()
+xyz_ninty = Euler([ninty, ninty, ninty])
+xyz_ninty.toMatrix4()
+
+child.setOrientation(x_ninty)
+print "x_ninty :"
+wrist = anim_utils.calculateJointAngles(parent, child, 1)
+print "wrist: ", wrist
+elbow = anim_utils.calculateJointAngles(parent, child, 2)
+print "elbow: ", elbow
+shoulder = anim_utils.calculateJointAngles(parent, child, 3)
+print "shoulder: ", shoulder
+head = anim_utils.calculateJointAngles(parent, child, 4)
+print "head: ", head
+
+child.setOrientation(y_ninty)
+print "y_ninty :"
+wrist = anim_utils.calculateJointAngles(parent, child, 1)
+print "wrist: ", wrist
+elbow = anim_utils.calculateJointAngles(parent, child, 2)
+print "elbow: ", elbow
+shoulder = anim_utils.calculateJointAngles(parent, child, 3)
+print "shoulder: ", shoulder
+head = anim_utils.calculateJointAngles(parent, child, 4)
+print "head: ", head
+
+child.setOrientation(z_ninty)
+print "z_ninty :"
+wrist = anim_utils.calculateJointAngles(parent, child, 1)
+print "wrist: ", wrist
+elbow = anim_utils.calculateJointAngles(parent, child, 2)
+print "elbow: ", elbow
+shoulder = anim_utils.calculateJointAngles(parent, child, 3)
+print "shoulder: ", shoulder
+head = anim_utils.calculateJointAngles(parent, child, 4)
+print "head: ", head
+
+child.setOrientation(xy_ninty)
+print "xy_ninty :"
+wrist = anim_utils.calculateJointAngles(parent, child, 1)
+print "wrist: ", wrist
+elbow = anim_utils.calculateJointAngles(parent, child, 2)
+print "elbow: ", elbow
+shoulder = anim_utils.calculateJointAngles(parent, child, 3)
+print "shoulder: ", shoulder
+head = anim_utils.calculateJointAngles(parent, child, 4)
+print "head: ", head
+
+child.setOrientation(xz_ninty)
+print "xz_ninty :"
+wrist = anim_utils.calculateJointAngles(parent, child, 1)
+print "wrist: ", wrist
+elbow = anim_utils.calculateJointAngles(parent, child, 2)
+print "elbow: ", elbow
+shoulder = anim_utils.calculateJointAngles(parent, child, 3)
+print "shoulder: ", shoulder
+head = anim_utils.calculateJointAngles(parent, child, 4)
+print "head: ", head
+
+child.setOrientation(yz_ninty)
+print "yz_ninty :"
+wrist = anim_utils.calculateJointAngles(parent, child, 1)
+print "wrist: ", wrist
+elbow = anim_utils.calculateJointAngles(parent, child, 2)
+print "elbow: ", elbow
+shoulder = anim_utils.calculateJointAngles(parent, child, 3)
+print "shoulder: ", shoulder
+head = anim_utils.calculateJointAngles(parent, child, 4)
+print "head: ", head
+
+child.setOrientation(xyz_ninty)
+print "xyz_ninty :"
+wrist = anim_utils.calculateJointAngles(parent, child, 1)
+print "wrist: ", wrist
+elbow = anim_utils.calculateJointAngles(parent, child, 2)
+print "elbow: ", elbow
+shoulder = anim_utils.calculateJointAngles(parent, child, 3)
+print "shoulder: ", shoulder
+head = anim_utils.calculateJointAngles(parent, child, 4)
+print "head: ", head

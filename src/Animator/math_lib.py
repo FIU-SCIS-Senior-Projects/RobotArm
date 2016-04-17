@@ -500,8 +500,9 @@ class Quaternion(object):
 
     def toEulerTwo(self, order="xzx"):
         """
-        toEulerTwo() converts a Quaterion to xyx, xzx or yzy euler angles
-        using the Euler Angle Formulas published at
+        toEulerTwo() converts a Quaterion to xyx, xzx or yzy euler angles.
+        It uses an Body fixed rotation version of the world fixed rotation
+        Euler Angle Formulas published at
         http://www.geometrictools.com/Documentation/EulerAngles.pdf
         Euler Angle Formulas
         David Eberly
@@ -534,42 +535,72 @@ class Quaternion(object):
         FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
         ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
         DEALINGS IN THE SOFTWARE.
+
+        Body Fixed Rotation Matrices from:
+        http://www.control.aau.dk/~jan/undervisning/MechanicsI/mm2pres.pdf Page 12
         """
         order = order.lower()
         rot = self.toMatrix3()
-        angle_x = 0
-        angle_y = 0
-        angle_z = 0
+        angle_x = 0.0
+        angle_y = 0.0
+        angle_z = 0.0
 
         if order == "xyx":
-            angle_y = math.acos(rot[0][0])
+            angle_y = math.acos(max(min(rot[0][0], 1), -1))
             if angle_y == 0:
-                angle_x = math.atan2(-rot[1][2], rot[1][1])
+                angle_x = math.atan2(-rot[2][1], rot[1][1])
             elif angle_y == math.pi:
-                angle_x = -math.atan2(-rot[1][2], rot[1][1])
+                angle_x = -math.atan2(rot[2][1], rot[1][1])
             else:
-                angle_x = math.atan2(rot[1][0], -rot[2][0]) + math.atan2(rot[0][1], rot[0][2])
+                angle_x_a = math.atan2(rot[1][0], rot[2][0])
+                angle_x_b = math.atan2(rot[0][1], -rot[0][2])
+                angle_x = angle_x_a + angle_x_b
+                if (angle_x_a > math.pi / 2) or (angle_x_a < -math.pi / 2):
+                    angle_y = -angle_y
 
         elif order == "xzx":
-            angle_z = math.acos(rot[0][0])
+            angle_z = math.acos(max(min(rot[0][0], 1), -1))
             if angle_z == 0:
                 angle_x = math.atan2(rot[2][1], rot[2][2])
             elif angle_z == math.pi:
                 angle_x = -math.atan2(rot[2][1], rot[2][2])
             else:
-                angle_x = math.atan2(rot[2][0], rot[1][0]) + math.atan2(rot[0][2], -rot[0][1])
+                angle_x_a = math.atan2(rot[2][0], -rot[1][0])
+                angle_x_b = math.atan2(rot[0][2], rot[0][1])
+                angle_x = angle_x_a + angle_x_b
+                if (angle_x_a > math.pi / 2) or (angle_x_a < -math.pi / 2):
+                    angle_z = - angle_z
 
         elif order == "yzy":
-            angle_z = math.acos(rot[1][1])
+            angle_z = math.acos(max(min(rot[1][1], 1), -1))
             if angle_z == 0:
-                angle_y = math.atan2(-rot[2][0], rot[2][2])
+                angle_y = math.atan2(rot[2][0], rot[2][2])
             elif angle_z == math.pi:
-                angle_y = -math.atan2(-rot[2][0], rot[2][2])
+                angle_y = -math.atan2(rot[2][0], rot[2][2])
             else:
-                angle_y = math.atan2(rot[2][1], -rot[0][1]) + math.atan2(rot[1][2], rot[1][0])
+                angle_y_a = math.atan2(rot[2][1], rot[0][1])
+                angle_y_b = math.atan2(rot[1][2], -rot[1][0])
+                angle_y = angle_y_a + angle_y_b
+                if (angle_y_a > math.pi / 2) or (angle_y_a < -math.pi / 2):
+                    angle_z = - angle_z
+
         else:
             raise TypeError("toEulerTwo: This implementation only defined for xyx, xzx and yzy")
 
+        if angle_x > math.pi:
+            angle_x -= 2 * math.pi
+        elif angle_x < -math.pi:
+            angle_x += 2 * math.pi
+
+        if angle_y > math.pi:
+            angle_y -= 2 * math.pi
+        elif angle_y < -math.pi:
+            angle_y += 2 * math.pi
+
+        if angle_z > math.pi:
+            angle_z -= 2 * math.pi
+        elif angle_z < -math.pi:
+            angle_z += 2 * math.pi
         return Euler([angle_x, angle_y, angle_z], False)
 
     def toAxisAngle(self):
