@@ -99,16 +99,16 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					MasterArmsConfig.HEAD_PITCH_MAX, 
 					MasterArmsConfig.HEAD_PITCH_MIN,
 					MasterArmsConfig.HEAD_PITCH_REST,
-					false
+					true
 					);
 			
 			servoTwoPosition = mapper.processHead(
-					y, 
+					z, 
 					MasterArmsConfig.SERVO_SENSOR_RATIO,
 					MasterArmsConfig.HEAD_YAW_MAX, 
 					MasterArmsConfig.HEAD_YAW_MIN,
 					MasterArmsConfig.HEAD_YAW_REST,
-					true
+					false
 					);
 			
 			if(servoOnePosition != jointPositions[0])
@@ -128,7 +128,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		else if(jointType.equals("left_shoulder"))
 		{
 			servoOnePosition = mapper.process( 
-					y, 
+					x, 
 					MasterArmsConfig.GEARED_SERVO_SENSOR_RATIO, 
 					MasterArmsConfig.ARM_ROLL_LEFT_MAX, 
 					MasterArmsConfig.ARM_ROLL_LEFT_MIN,
@@ -136,7 +136,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					);
 			
 			servoTwoPosition = mapper.process( 
-					x, 
+					y, 
 					MasterArmsConfig.GEARED_SERVO_SENSOR_RATIO, 
 					MasterArmsConfig.ARM_PITCH_LEFT_MAX, 
 					MasterArmsConfig.ARM_PITCH_LEFT_MIN,
@@ -168,7 +168,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					);
 			
 			servoTwoPosition = mapper.process( 
-					x, 
+					z, 
 					MasterArmsConfig.SERVO_SENSOR_RATIO, 
 					MasterArmsConfig.ARM_YAW_LEFT_MAX, 
 					MasterArmsConfig.ARM_YAW_LEFT_MIN,
@@ -192,15 +192,15 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		else if(jointType.equals("left_wrist"))
 		{
 			servoOnePosition = mapper.process( 
-					z, 
+					x, 
 					MasterArmsConfig.SERVO_SENSOR_RATIO, 
 					MasterArmsConfig.WRIST_ROLL_LEFT_MAX, 
 					MasterArmsConfig.WRIST_ROLL_LEFT_MIN,
-					true
+					false
 					);
 			
 			servoTwoPosition = mapper.process( 
-					x, //100-y
+					y,
 					MasterArmsConfig.SERVO_SENSOR_RATIO, 
 					MasterArmsConfig.FOREARM_YAW_LEFT_MAX, 
 					MasterArmsConfig.FOREARM_YAW_LEFT_MIN,
@@ -224,7 +224,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		else if(jointType.equals("right_shoulder"))
 		{
 			servoOnePosition = mapper.process( 
-					y, 
+					x, 
 					MasterArmsConfig.GEARED_SERVO_SENSOR_RATIO, 
 					MasterArmsConfig.ARM_ROLL_RIGHT_MAX, 
 					MasterArmsConfig.ARM_ROLL_RIGHT_MIN,
@@ -232,7 +232,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					);
 			
 			servoTwoPosition = mapper.process(
-					x, 
+					y, 
 					MasterArmsConfig.GEARED_SERVO_SENSOR_RATIO, 
 					MasterArmsConfig.ARM_PITCH_RIGHT_MAX, 
 					MasterArmsConfig.ARM_PITCH_RIGHT_MIN,
@@ -256,7 +256,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		else if(jointType.equals("right_elbow"))
 		{
 			servoOnePosition = mapper.process( 
-					y, //50 - x
+					y,
 					MasterArmsConfig.SERVO_SENSOR_RATIO,
 					MasterArmsConfig.ELBOW_ROLL_RIGHT_MAX, 
 					MasterArmsConfig.ELBOW_ROLL_RIGHT_MIN,
@@ -264,11 +264,11 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					);
 			
 			servoTwoPosition = mapper.process( 
-					x, //130 - y
+					z,
 					MasterArmsConfig.SERVO_SENSOR_RATIO, 
 					MasterArmsConfig.ARM_YAW_RIGHT_MAX, 
 					MasterArmsConfig.ARM_YAW_RIGHT_MIN,
-					true
+					false
 					);
 			
 			if(servoTwoPosition != jointPositions[10])
@@ -288,7 +288,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		else if(jointType.equals("right_wrist"))
 		{
 			servoOnePosition = mapper.process( 
-					z, 
+					x, 
 					MasterArmsConfig.SERVO_SENSOR_RATIO, 
 					MasterArmsConfig.WRIST_ROLL_RIGHT_MAX, 
 					MasterArmsConfig.WRIST_ROLL_RIGHT_MIN,
@@ -296,7 +296,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					);
 			
 			servoTwoPosition = mapper.process( 
-					x, 
+					z, 
 					MasterArmsConfig.SERVO_SENSOR_RATIO, 
 					MasterArmsConfig.FOREARM_YAW_RIGHT_MAX, 
 					MasterArmsConfig.FOREARM_YAW_RIGHT_MIN,

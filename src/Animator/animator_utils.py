@@ -582,13 +582,13 @@ class RecordSession(object): # A storage class
                 if cur_frame == 0:
                     cur_s = keyframe.start_frame_data[0]
                 else:
-                    prev_keyframe = getKeyframe(bone_name, cur_frame - 1)
+                    prev_keyframe = self.getKeyframe(bone_name, cur_frame - 1)
                     prev_q = prev_keyframe.start_frame_data[0]
                     cur_q = keyframe.start_frame_data[0]
                     next_q = keyframe.end_frame_data[0]
                     cur_s = cur_q * math.exp(-((math.log(-cur_q * next_q) + math.log(-cur_q * prev_q)) / 4.0))  ###### NOT CORRECT AT ALL ###########
                 if cur_frame == len(self.frame_data) - 2:
-                    next_keyframe = getKeyframe(bone_name, cur_frame + 1)
+                    next_keyframe = self.getKeyframe(bone_name, cur_frame + 1)
                     next_s = next_keyframe.start_frame_data[0]
 
 
@@ -1960,47 +1960,78 @@ def copyBone(bone, selected_list, name_list, parent=None):
             tmp_list += copyBone(child, selected_list, name_list, copy)
     return tmp_list
 
-#calculateJointAngles is passed three parameters:
-    #par_bone - the Bone object closest to the spine
-    #child_bone - the Bone object farthest from the spine
-    #joint - an int representing the type of joint
-        #1 - wrist
-        #2 - elbow
-        #3 - shoulder
-        #4 - head
-#it uses the orientation parameter of the Bone
+
 def calculateJointAngles(par_bone, child_bone, joint):
+    """
+    calculateJointAngles is passed three parameters:
+        par_bone - the Bone object closest to the spine
+        child_bone - the Bone object farthest from the spine
+        joint - an int representing the type of joint
+            1 - wrist (x - roll, z - yaw)
+            2 - elbow (y - roll, z - yaw)
+            3 - shoulder (x - roll, y - pitch)
+            4 - head (x - tilt, z - pan)
+    it uses the orientation parameter of the Bones to
+    find the Quaternion representing the rotation that the
+    child bone would undertake to be in alignment with the
+    parent bone (orient_relative). This rotation represents the
+    the orientation of the joint between the two bones.
+    toEulerTwo() is called on this Quaternion to find the Euler
+    angles that correspond to the two servos on Telebot
+    that actuate the joint while preventing rotation on the
+    third axis.
+    """
+    """
     orient_par = par_bone.vs_node.input_ports[0].data
     orient_child = child_bone.vs_node.input_ports[0].data
+    forward_par = orient_par * Vector3(UNIT_Z)
+    right_par = orient_par * Vector3(UNIT_X)
+    up_par = orient_par * Vector3(UNIT_Y)
+    forward_child = orient_child * Vector3(UNIT_Z)
+    right_child = orient_child * Vector3(UNIT_X)
+    up_child = orient_child * Vector3(UNIT_Y)
+    crossupforard = up_par.cross(forward_par)
+    uprig = up_par.cross(right_par)
+"""
+    orient_par = par_bone.vs_node.input_ports[0].data
+    orient_par.normalize()
+    orient_child = child_bone.vs_node.input_ports[0].data
+    orient_child.normalize()
+    # Find the quaternion representing the amount that the child is rotated
+    # relative to the parent by multiplying the inverse of the child's
+    # orientation by the orientation of the parent
+    inverse_orient_child = -orient_child
+    orient_relative = inverse_orient_child * orient_par
+    orient_relative.normalize()
 
     if joint == 1:
+        angles = orient_relative.toEulerTwo("xzx")
+        # angles_child = orient_child.toEulerTwo("XZX")
+        # angles_par = orient_par.toEulerTwo("xzx")
+        # angles_rel = angles_par - angles_child
+        # print "x: ", math.degrees(angles.x), " y: ", math.degrees(angles.y), " z: ", math.degrees(angles.z)
+        # print "REL x: ", math.degrees(angles_rel.x), " y: ", math.degrees(angles_rel.y), " z: ", math.degrees(angles_rel.z)
+        return math.degrees(angles.x), math.degrees(angles.y), math.degrees(angles.z)
 
-        invert_orient_par = -orient_par
-        orient_relative = orient_child * invert_orient_par
-        angles = orient_relative.toEuler()
-        return math.degrees(angles[0]), math.degrees(angles[1]), math.degrees(angles[2])
+    elif joint == 2:
+        angles = orient_relative.toEulerTwo("yzy")
+        return math.degrees(angles.x), math.degrees(angles.y), math.degrees(angles.z)
+
+    elif joint == 3:
+        angles = orient_relative.toEulerTwo("xyx")
+        return math.degrees(angles.x), math.degrees(angles.y), math.degrees(angles.z)
 
     elif joint == 4:
-        invert_orient_par = -orient_par
-        orient_relative = invert_orient_par * invert_orient_par
-        angles = orient_relative.toEulerFullCircle()
-        print "x: ", math.degrees(angles[0]), " y: ", math.degrees(angles[1]), " z: ", math.degrees(angles[2])
-        return math.degrees(angles[0]), math.degrees(angles[1]), math.degrees(angles[2])
+        angles = orient_relative.toEulerTwo("xzx")
+        return math.degrees(angles.x), math.degrees(angles.y), math.degrees(angles.z)
 
 
 def calculateJointVaule(par_bone, child_bone, joint):
-    orient0 = par_bone.getOrientation()
-    #orient0 = par_bone.vs_node.input_ports[0].data
+    orient0 = par_bone.vs_node.input_ports[0].data
     timestamp0 = par_bone.vs_node.input_ports[0].timestamp
 
-    orient1 = child_bone.getOrientation()
-    #orient1 = child_bone.vs_node.input_ports[0].data
+    orient1 = child_bone.vs_node.input_ports[0].data
     timestamp1 = child_bone.vs_node.input_ports[0].timestamp
-
-    #orient0.toEuler()
-    #orient1.toEuler()
-
-
 
     if timestamp0 == -1:
         timestamp = timestamp1 / 1000000.0
@@ -2015,7 +2046,6 @@ def calculateJointVaule(par_bone, child_bone, joint):
         forward1 = orient1 * Vector3(UNIT_Z)
         up1 = orient1 * Vector3(UNIT_Y)
         right1 = orient1 * Vector3(UNIT_X)
-
 
         ## Calculate the angle between the right vectors and the axis vector perpendicular to them
         angle = math.acos(max(min(right1.dot(right0), 1.0), -1.0))
