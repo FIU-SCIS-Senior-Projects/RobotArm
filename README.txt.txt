@@ -7,18 +7,19 @@ The Directory structure is shown below:
 
 Documents:
 ------------------------------------
-RoboticArm1.0-DailyScrumMeetingMinutes.doc
+Robotic Arm Project Documentation.doc
 
 
 
 Posters:
 ----------------------------------------
 Curtis-Cox.ppt.pptx
+Shadeh-FerrisFrancis.ppt
 
 
 Presentation Slides:
 -------------------------------------------
-
+Into Video Slides
 
 
 src:
